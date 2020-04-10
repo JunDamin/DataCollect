@@ -23,7 +23,7 @@ class User(AbstractUser):
     bio = models.TextField(default="", blank=True)
     employment = models.ForeignKey(
         data_models.Employment,
-        related_name="employment",
+        related_name="user",
         on_delete=models.PROTECT,
         blank=True,
         null=True,
