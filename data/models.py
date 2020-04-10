@@ -10,6 +10,7 @@ class Country():
     """ Define countries that use """
 
     code = CountryField()
+    korean = models.TextField(max_length="255")
 
     def __str__(self):
         return self.code.name
@@ -21,7 +22,7 @@ class Employment(core_models.TimeStampedModel):
 
     name = models.CharField(max_length=255)
     koica_code = models.CharField(max_length=255)
-    location = models.ForeignKey("Country", related_name='employment', on_delete=models.PROTECT, null=True, blank=True)
+    location = CountryField()
     
 
     def __str__(self):
@@ -33,16 +34,16 @@ class EmploymentDetail(core_models.TimeStampedModel):
     """ Define Employment details.
     When they update, actually, they create detail. """
 
-    employment = models.ForeignKey("Employment", related_name='employment_detail', on_delete=models.PROTECT)
+    employment = models.ForeignKey(Employment, related_name='employment_detail', on_delete=models.PROTECT)
     address = models.TextField()
-    countries = models.ManyToManyField("Country", related_name="employment_detail", blank=True)
+    countries = models.ManyToManyField(Country, related_name="employment_detail", blank=True)
     description = models.TextField()
-    antecedents = models.ManyToManyField("Employment", related_name='antecedents', blank=True)
+    antecedents = models.ManyToManyField(Employment, related_name='antecedents', blank=True)
 
 
 class Region():
     name = models.CharField(max_length=255)
-    countries = models.ManyToManyField("Country", related_name="countries", blank=True)
+    countries = models.ManyToManyField(Country, related_name="regions", blank=True)
 
     def __str__(self):
         return self.name
