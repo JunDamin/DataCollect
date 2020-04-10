@@ -1,0 +1,18 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+flake8 = "*"
+
+[packages]
+django = "*"
+django-countries = "*"
+requests = "*"
+pillow = "*"
+python-dotenv = "*"
+django-import-export = "*"
+
+[requires]
+python_version = "3.7"
