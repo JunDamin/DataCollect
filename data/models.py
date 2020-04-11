@@ -5,7 +5,8 @@ from core import models as core_models
 
 # Collect Master Data Class
 
-class Country():
+
+class Country(models.Model):
 
     """ Define countries that use """
 
@@ -23,7 +24,6 @@ class Employment(core_models.TimeStampedModel):
     name = models.CharField(max_length=255)
     koica_code = models.CharField(max_length=255)
     location = CountryField()
-    
 
     def __str__(self):
         return self.name
@@ -34,16 +34,24 @@ class EmploymentDetail(core_models.TimeStampedModel):
     """ Define Employment details.
     When they update, actually, they create detail. """
 
-    employment = models.ForeignKey(Employment, related_name='employment_detail', on_delete=models.PROTECT)
+    employment = models.ForeignKey(
+        Employment, related_name="employment_detail", on_delete=models.PROTECT
+    )
     address = models.TextField()
-    countries = models.ManyToManyField(Country, related_name="employment_detail", blank=True)
+    countries = models.ManyToManyField(
+        Country, related_name="employment_detail", null=True, blank=True
+    )
     description = models.TextField()
-    antecedents = models.ManyToManyField(Employment, related_name='antecedents', blank=True)
+    antecedents = models.ManyToManyField(
+        Employment, related_name="antecedents", blank=True, null=True
+    )
 
 
-class Region():
+class Region(models.Model):
     name = models.CharField(max_length=255)
-    countries = models.ManyToManyField(Country, related_name="regions", blank=True)
+    countries = models.ManyToManyField(
+        Country, related_name="regions", blank=True, null=True
+    )
 
     def __str__(self):
         return self.name

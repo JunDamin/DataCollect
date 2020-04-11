@@ -4,7 +4,7 @@ from core import models as core_models
 # Create your models here.
 
 
-class EventType():
+class EventType(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
 
