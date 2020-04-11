@@ -13,18 +13,3 @@
 
     <button class="btn bg-red-500 text-white">{{cta}}</button>
 </form>
-<script>
-    window.onload = action
-    let single = document.getElementById('id_is_single');
-    single.addEventListener("click", action);
-    function action() {
-        let child = document.getElementById('id_end_date');
-        let mother = child.parentNode;
-        if (single.checked) {
-            mother.style.visibility = 'hidden';
-        }
-        else {
-            mother.style.visibility = 'visible';
-        }
-    }
-</script>

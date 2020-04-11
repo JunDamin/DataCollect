@@ -156,6 +156,9 @@
 
 #4.3.2 Apply single method in template with JS
 
+#4.4 Personnel View
+
+#4.4.1 personnel report crud
 
 Q.
  - 어떻게 해야 ordering이 된 가장 최신 값만 표기할 수 있을까?

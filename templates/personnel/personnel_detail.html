@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block page_title %}
-{{event.title}}
+{{personnel.department}}
 {% endblock page_title %}
 
 {% block content %}
@@ -11,17 +11,14 @@
         <div class="flex w-full justify-between border-section">
             <div class="pb-1 content-around">
                 <div class="flex justify-between box-border">
-                    <h4 class="text-3xl font-medium h-full">{{event.title}}</h4>
+                    <h4 class="text-3xl font-medium h-full">{{personnel.department}}</h4>
                 </div>
                 <div class="justify-between w-full overflow-hidden ">
-                    <span class="text-gray-700 font-bold">{{event.country.name}}</span>
-                    <span class="text-teal-800 font-bold px-5">{{event.event_type}}</span>
+                    <span class="text-gray-700 font-bold">{{personnel.country.name}}</span>
+                    <span class="text-teal-800 font-bold px-5">{{personnel.personnel_type}}</span>
                 </div>
                 <div>
-                    <span class="text-sm text-gray-500 font-bold">{{event.start_date}}</span>
-                    {% if not event.is_single %}
-                    <span class="text-sm text-gray-500 font-bold">{{event.end_date}}</span>
-                    {% endif %}
+                    <span class="text-sm text-gray-500 font-bold">{{personnel.report_date}}</span>
                 </div>
             </div>
             <div>
@@ -33,13 +30,13 @@
         </div>
         <div class="border-section">
             <p class="w-full p-5">
-                {{event.description|linebreaks}}
+                {{personnel.description|linebreaks}}
             </p>
         </div>
-        {% if user == event.author %}
+        {% if user == personnel.author %}
         <div class="flex flex-col w-full">
-            <a href="{% url 'events:edit' event.pk %}" class="btn-link bg-teal-500 mb-3">Edit event</a>
-            <a href="{% url 'events:delete' event.pk %}" class="btn-link">Delete event</a>
+            <a href="{% url 'personnel:edit' personnel.pk %}" class="btn-link bg-teal-500 mb-3">Edit personnel</a>
+            <a href="{% url 'personnel:delete' personnel.pk %}" class="btn-link">Delete personnel</a>
         </div>
         {% endif %}
     </div>
