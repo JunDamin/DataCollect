@@ -25,4 +25,5 @@ class LoggedOutOnlyView(UserPassesTestMixin):
 
 class LoggedInOnlyView(LoginRequiredMixin):
 
+    permission_denied_message = "Please login first"
     login_url = reverse_lazy("users:login")

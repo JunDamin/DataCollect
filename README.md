@@ -144,6 +144,13 @@
 
 #4 View
 
+#4.1 Copy Users Views
+
+#4.2.1 Prediction Create View
+- form에서 초기 값은 inital로 처리 가능
+- orm에서 filter와 order_by로 가장 최신 선택가능
+- 
 
 Q.
  - 어떻게 해야 ordering이 된 가장 최신 값만 표기할 수 있을까?
+ - 어떻게 해야지 view에서 employment 유무를 확인해서 다른 곳으로 보낼 수 있을까?

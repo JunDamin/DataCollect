@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+{{article.title}}
+{% endblock page_title %}
+
+{% block content %}
+
+<div class="container mx-auto flex justify-around pb-10">
+    <div class="lg:w-1/2 md:w-3/4 px-5">
+        <div class="flex w-full justify-between border-section">
+            <div class="pb-1 content-around">
+                <div class="flex justify-between box-border">
+                    <h4 class="text-3xl font-medium h-full">{{prediction.title}}</h4>
+                </div>
+                <div class="justify-between w-full overflow-hidden ">
+                    <span class="text-gray-700 font-bold">{{prediction.country.name}}</span>
+                    <span class="text-teal-800 font-bold px-5">{{prediction.risk_type}}</span>
+                    <span class="mr-5 text-gray-700 font-bold">{{prediction.risk_level}}</span>
+                </div>
+                <div>
+                    <span class="text-sm text-gray-500 font-bold">{{prediction.report_date}}</span>
+                </div>
+            </div>
+            <div>
+                <a href="{{prediction.author.get_absolute_url}}" class="flex flex-col items-center">
+                    {% include "mixins/user_avatar.html" with user=prediction.author %}
+                    <span class="mt-2 text-gray-500">{{prediction.author.first_name}}</span>
+                </a>
+            </div>
+        </div>
+        <div class="border-section">
+            <p class="w-full p-5">
+                {{prediction.description|linebreaks}}
+            </p>
+        </div>
+        <div class="border-section">
+            <p class="w-full p-5">
+                {{prediction.action|linebreaks}}
+            </p>
+        </div>
+        {% if user == prediction.author %}
+        <div class="flex flex-col w-full">
+            <a href="{% url 'prediction:edit' prediction.pk %}" class="btn-link bg-teal-500 mb-3">Edit prediction</a>
+            <a href="{% url 'prediction:delete' prediction.pk %}" class="btn-link">Delete prediction</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock content %}

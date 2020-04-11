@@ -2,16 +2,23 @@ from django.db import models
 from django_countries.fields import CountryField
 from core import models as core_models
 from data import models as data_models
+from users import models as user_models
 
 
 class RiskType(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
 
+    def __str__(self):
+        return self.name
+
 
 class RiskLevel(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return self.name
 
 
 class Prediction(core_models.TimeStampedModel):
@@ -29,3 +36,7 @@ class Prediction(core_models.TimeStampedModel):
     )
     description = models.TextField()
     action = models.TextField()
+
+    author = models.ForeignKey(
+        user_models.User, related_name="prediction", on_delete=models.PROTECT,
+    )
