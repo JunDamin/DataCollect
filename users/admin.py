@@ -13,11 +13,11 @@ class CustomUserAdmin(UserAdmin):
     fieldsets = UserAdmin.fieldsets + (
         (
             "Custom Profile",
-            {"fields": ("avatar", "bio", "employment", "login_method",)},
+            {"fields": ("avatar", "bio", "department", "login_method",)},
         ),
     )
 
-    list_filter = UserAdmin.list_filter + ("employment",)
+    list_filter = UserAdmin.list_filter + ("department",)
 
     list_display = (
         "username",

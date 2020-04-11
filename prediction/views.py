@@ -22,7 +22,7 @@ class PredictionCreateView(user_mixins.LoggedInOnlyView, FormView):
     def form_valid(self, form):
         prediction = form.save()
         prediction.author = self.request.user
-        prediction.employment = self.request.user.employment
+        prediction.department = self.request.user.department
         prediction.save()
         return redirect(reverse("prediction:detail", kwargs={"pk": prediction.pk}))
 

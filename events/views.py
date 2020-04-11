@@ -22,7 +22,7 @@ class EventCreateView(user_mixins.LoggedInOnlyView, FormView):
     def form_valid(self, form):
         event = form.save()
         event.author = self.request.user
-        event.employment = self.request.user.employment
+        event.department = self.request.user.department
         event.save()
         return redirect(reverse("events:detail", kwargs={"pk": event.pk}))
 

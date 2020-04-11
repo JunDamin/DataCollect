@@ -29,9 +29,9 @@ class EventCreateForm(forms.ModelForm):
     def __init__(self, user, *args, **kwargs):
         # 인자를 받기 위해서는 view에서 get_from_kwargs를 정의하고 super를 통해서 user 값을 확보해야 한다.
         super(EventCreateForm, self).__init__(*args, **kwargs)
-        if user.employment:
+        if user.department:
             country_choice = (
-                user.employment.employment_detail.filter()
+                user.department.department_detail.filter()
                 .order_by("-created")[0]
                 .countries.all()
             )

@@ -35,8 +35,8 @@ class Event(core_models.TimeStampedModel):
         null=True,
         blank=True,
     )
-    employment = models.ForeignKey(
-        data_models.Employment,
+    department = models.ForeignKey(
+        data_models.Department,
         related_name="events",
         on_delete=models.PROTECT,
         null=True,

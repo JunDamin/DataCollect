@@ -19,7 +19,7 @@ class ItemAdmin(ImportExportMixin, admin.ModelAdmin):
     """ Prediction Admin Definition """
 
     list_display = (
-        "employment",
+        "department",
         "country",
         "report_date",
         "risk_type",
@@ -29,7 +29,7 @@ class ItemAdmin(ImportExportMixin, admin.ModelAdmin):
     )
 
     list_filter = (
-        "employment",
+        "department",
         "risk_type",
         "risk_level",
         "country",

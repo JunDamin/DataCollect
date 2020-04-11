@@ -45,19 +45,19 @@ class PersonnelInfoInline(admin.TabularInline):
 @admin.register(models.PersonnelReport)
 class PersonnelReportAdmin(ImportExportMixin, admin.ModelAdmin):
     fieldsets = (
-        ("Basic Info", {"fields": ("employment", "report_date", "country",)},),
+        ("Basic Info", {"fields": ("department", "report_date", "country",)},),
     )
 
     inlines = [PersonnelInfoInline]
 
     list_display = (
-        "employment",
+        "department",
         "report_date",
         "country",
     )
 
     list_filter = (
-        "employment",
+        "department",
         "report_date",
         "country",
     )

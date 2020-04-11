@@ -225,7 +225,7 @@ class UpdateProfileView(mixins.LoggedInOnlyView, UpdateView):
     model = models.User
     template_name = "users/update-profile.html"
     fields = (
-        "employment",
+        "department",
         "first_name",
         "last_name",
     )
@@ -236,7 +236,7 @@ class UpdateProfileView(mixins.LoggedInOnlyView, UpdateView):
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class=form_class)
-        form.fields["employment"].widget.attrs = {"placeholder": "employment name"}
+        form.fields["department"].widget.attrs = {"placeholder": "department name"}
         form.fields["first_name"].widget.attrs = {"placeholder": "First name"}
         form.fields["last_name"].widget.attrs = {"placeholder": "Last name"}
         return form

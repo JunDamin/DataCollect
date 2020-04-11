@@ -20,9 +20,9 @@ class Country(models.Model):
         return self.korean
 
 
-class Employment(core_models.TimeStampedModel):
+class Department(core_models.TimeStampedModel):
 
-    """ Define employment ID """
+    """ Define department ID """
 
     name = models.CharField(max_length=255)
     koica_code = models.CharField(max_length=255)
@@ -32,26 +32,29 @@ class Employment(core_models.TimeStampedModel):
         return self.name
 
 
-class EmploymentDetail(core_models.TimeStampedModel):
+class DepartmentDetail(core_models.TimeStampedModel):
 
-    """ Define Employment details.
+    """ Define Department details.
     When they update, actually, they create detail. """
 
-    employment = models.ForeignKey(
-        Employment, related_name="employment_detail", on_delete=models.PROTECT
+    class Meta:
+        verbose_name = "Department detail"
+
+    department = models.ForeignKey(
+        Department, related_name="department_detail", on_delete=models.PROTECT
     )
     address = models.TextField()
     countries = models.ManyToManyField(
-        Country, related_name="employment_detail", blank=True
+        Country, related_name="department_detail", blank=True
     )
     description = models.TextField()
     antecedents = models.ManyToManyField(
-        Employment, related_name="antecedents", blank=True
+        Department, related_name="antecedents", blank=True
     )
     active = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.employment.name + " detail"
+        return self.department.name + " detail"
 
 
 class Region(models.Model):

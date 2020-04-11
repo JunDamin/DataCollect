@@ -13,16 +13,16 @@ class ItemAdmin(ImportExportMixin, admin.ModelAdmin):
     list_display = ("name",)
 
 
-class EmploymentDetailInline(admin.TabularInline):
-    model = models.EmploymentDetail
+class DepartmentDetailInline(admin.TabularInline):
+    model = models.DepartmentDetail
     extra = 0
 
 
-@admin.register(models.Employment)
-class EmploymentAdmin(ImportExportMixin, admin.ModelAdmin):
+@admin.register(models.Department)
+class DepartmentAdmin(ImportExportMixin, admin.ModelAdmin):
     fieldsets = (("Basic Info", {"fields": ("name", "koica_code", "location",)},),)
 
-    inlines = [EmploymentDetailInline]
+    inlines = [DepartmentDetailInline]
 
     list_display = (
         "name",

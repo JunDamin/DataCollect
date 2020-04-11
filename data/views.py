@@ -14,5 +14,5 @@ from . import models, forms
 
 class HomeView(user_mixins.LoggedInOnlyView, ListView):
 
-    model = models.Employment
-    context_object_name = "employment"
+    model = models.Department
+    context_object_name = "department"

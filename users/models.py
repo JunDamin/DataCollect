@@ -21,8 +21,8 @@ class User(AbstractUser):
 
     avatar = models.ImageField(upload_to="avatars", blank=True)
     bio = models.TextField(default="", blank=True)
-    employment = models.ForeignKey(
-        data_models.Employment,
+    department = models.ForeignKey(
+        data_models.Department,
         related_name="user",
         on_delete=models.PROTECT,
         blank=True,
