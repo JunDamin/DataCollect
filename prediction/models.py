@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django_countries.fields import CountryField
 from core import models as core_models
 from data import models as data_models
@@ -38,5 +39,12 @@ class Prediction(core_models.TimeStampedModel):
     action = models.TextField()
 
     author = models.ForeignKey(
-        user_models.User, related_name="prediction", on_delete=models.PROTECT,
+        user_models.User,
+        related_name="prediction",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
     )
+
+    def get_absolute_url(self):
+        return reverse("prediction:detail", kwargs={"pk": self.pk})

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+{{event.title}}
+{% endblock page_title %}
+
+{% block content %}
+
+<div class="container mx-auto flex justify-around pb-10">
+    <div class="lg:w-1/2 md:w-3/4 px-5">
+        <div class="flex w-full justify-between border-section">
+            <div class="pb-1 content-around">
+                <div class="flex justify-between box-border">
+                    <h4 class="text-3xl font-medium h-full">{{event.title}}</h4>
+                </div>
+                <div class="justify-between w-full overflow-hidden ">
+                    <span class="text-gray-700 font-bold">{{event.country.name}}</span>
+                    <span class="text-teal-800 font-bold px-5">{{event.event_type}}</span>
+                </div>
+                <div>
+                    <span class="text-sm text-gray-500 font-bold">{{prediction.start_date}}</span>
+                    <span class="text-sm text-gray-500 font-bold">{{prediction.end_date}}</span>
+                </div>
+            </div>
+            <div>
+                <a href="{{prediction.author.get_absolute_url}}" class="flex flex-col items-center">
+                    {% include "mixins/user_avatar.html" with user=prediction.author %}
+                    <span class="mt-2 text-gray-500">{{prediction.author.first_name}}</span>
+                </a>
+            </div>
+        </div>
+        <div class="border-section">
+            <p class="w-full p-5">
+                {{event.description|linebreaks}}
+            </p>
+        </div>
+        {% if user == event.author %}
+        <div class="flex flex-col w-full">
+            <a href="{% url 'events:edit' event.pk %}" class="btn-link bg-teal-500 mb-3">Edit event</a>
+            <a href="{% url 'events:delete' event.pk %}" class="btn-link">Delete event</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock content %}

@@ -149,7 +149,8 @@
 #4.2.1 Prediction Create View
 - form에서 초기 값은 inital로 처리 가능
 - orm에서 filter와 order_by로 가장 최신 선택가능
-- 
+
+#4.3 Finish Event View
 
 Q.
  - 어떻게 해야 ordering이 된 가장 최신 값만 표기할 수 있을까?

@@ -14,12 +14,12 @@ class ItemAdmin(ImportExportMixin, admin.ModelAdmin):
 
 
 @admin.register(models.Event)
-class ItemAdmin(ImportExportMixin, admin.ModelAdmin):
+class EventAdmin(ImportExportMixin, admin.ModelAdmin):
 
     """ Item Admin Definition """
 
     list_display = (
-        "name",
+        "title",
         "country",
         "event_type",
     )
