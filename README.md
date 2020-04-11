@@ -132,7 +132,9 @@
 
 #1.7 Error manage
  - class should inherit models.Model
- - 
+ - make urls
+
+#1.7.2. Custom User setting
 #2 Admin
 
 #3 sample data command

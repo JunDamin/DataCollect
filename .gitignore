@@ -1,3 +1,5 @@
 .vscode
 DataCollect
 pipfile.lock
+
+db.sqlite3

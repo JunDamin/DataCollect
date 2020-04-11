@@ -39,19 +39,17 @@ class EmploymentDetail(core_models.TimeStampedModel):
     )
     address = models.TextField()
     countries = models.ManyToManyField(
-        Country, related_name="employment_detail", null=True, blank=True
+        Country, related_name="employment_detail", blank=True
     )
     description = models.TextField()
     antecedents = models.ManyToManyField(
-        Employment, related_name="antecedents", blank=True, null=True
+        Employment, related_name="antecedents", blank=True
     )
 
 
 class Region(models.Model):
     name = models.CharField(max_length=255)
-    countries = models.ManyToManyField(
-        Country, related_name="regions", blank=True, null=True
-    )
+    countries = models.ManyToManyField(Country, related_name="regions", blank=True,)
 
     def __str__(self):
         return self.name

@@ -5,27 +5,35 @@ from . import models
 
 @admin.register(models.PersonnelType)
 class PersonnelTypeAdmin(ImportExportMixin, admin.ModelAdmin):
-    fieldsets = (("Basic Info", {"fields": ("name", "category", "the_type",)},))
+    fieldsets = (("Basic Info", {"fields": ("name", "category", "the_type",)}),)
 
     list_display = (
-       "name", "category", "the_type",
+        "name",
+        "category",
+        "the_type",
     )
 
     list_filter = (
-        "name", "category", "the_type",
+        "name",
+        "category",
+        "the_type",
     )
 
 
 @admin.register(models.PersonnelInfo)
 class PersonnelInfoAdmin(ImportExportMixin, admin.ModelAdmin):
-    fieldsets = (("Basic Info", {"fields": ("personnel", "number", "report",)},))
+    fieldsets = (("Basic Info", {"fields": ("personnel", "number", "report",)},),)
 
     list_display = (
-       "personnel", "number", "report",
+        "personnel",
+        "number",
+        "report",
     )
 
     list_filter = (
-        "personnel", "number", "report",
+        "personnel",
+        "number",
+        "report",
     )
 
 
@@ -36,15 +44,23 @@ class PersonnelInfoInline(admin.TabularInline):
 
 @admin.register(models.PersonnelReport)
 class PersonnelReportAdmin(ImportExportMixin, admin.ModelAdmin):
-    fieldsets = (("Basic Info", {"fields": ("employment", "report_date", "country",)},))
+    fieldsets = (
+        ("Basic Info", {"fields": ("employment", "report_date", "country",)},),
+    )
 
     inlines = [PersonnelInfoInline]
 
     list_display = (
-       "employment", "report_date", "country",
+        "employment",
+        "report_date",
+        "country",
     )
 
     list_filter = (
-        "employment", "report_date", "country",
+        "employment",
+        "report_date",
+        "country",
     )
+
+
 # Register your models here.
