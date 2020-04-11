@@ -27,7 +27,7 @@ class Department(core_models.TimeStampedModel):
     name = models.CharField(max_length=255)
     koica_code = models.CharField(max_length=255)
     location = CountryField()
-    is_active = models.BooleanField(verbose_name="Active",)
+    is_active = models.BooleanField(verbose_name="Active", default=True)
 
     def __str__(self):
         return self.name

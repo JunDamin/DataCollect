@@ -23,6 +23,8 @@ class EventCreateView(user_mixins.LoggedInOnlyView, FormView):
         event = form.save()
         event.author = self.request.user
         event.department = self.request.user.department
+        if event.is_single:
+            event.end_date = event.start_date
         event.save()
         return redirect(reverse("events:detail", kwargs={"pk": event.pk}))
 

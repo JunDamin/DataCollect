@@ -47,7 +47,6 @@ class EventCreateForm(forms.ModelForm):
 
     def save(self, *args, **kwargs):
         event = super().save(commit=False)
-        print(event.is_single)
         return event
 
 
