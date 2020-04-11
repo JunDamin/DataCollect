@@ -11,10 +11,13 @@ class Country(models.Model):
     """ Define countries that use """
 
     code = CountryField()
-    korean = models.TextField(max_length="255")
+    korean = models.CharField(max_length=255)
 
     def __str__(self):
         return self.code.name
+
+    def name(self):
+        return self.korean
 
 
 class Employment(core_models.TimeStampedModel):
@@ -45,6 +48,10 @@ class EmploymentDetail(core_models.TimeStampedModel):
     antecedents = models.ManyToManyField(
         Employment, related_name="antecedents", blank=True
     )
+    active = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.employment.name + " detail"
 
 
 class Region(models.Model):

@@ -6,10 +6,12 @@ from data import models as data_models
 
 class RiskType(models.Model):
     name = models.CharField(max_length=255)
+    description = models.TextField(null=True, blank=True)
 
 
 class RiskLevel(models.Model):
     name = models.CharField(max_length=255)
+    description = models.TextField(null=True, blank=True)
 
 
 class Prediction(core_models.TimeStampedModel):

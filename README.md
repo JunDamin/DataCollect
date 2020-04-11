@@ -137,6 +137,13 @@
 #1.7.2. Custom User setting
 #2 Admin
 
+#2.1 create admin
+
+#2.1.1 
 #3 sample data command
 
 #4 View
+
+
+Q.
+ - 어떻게 해야 ordering이 된 가장 최신 값만 표기할 수 있을까?
