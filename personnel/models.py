@@ -18,9 +18,19 @@ class PersonnelType(core_models.TimeStampedModel):
 
 class PersonnelInfo(core_models.TimeStampedModel):
 
-    employment = models.ForeignKey(data_models.Employment, related_name="personnel_info", on_delete=models.PROTECT)
-    personnel = models.ForeignKey(PersonnelType, related_name="personnel_info", on_delete=models.PROTECT)
+    personnel = models.ForeignKey(
+        "PersonnelType", related_name="info", on_delete=models.PROTECT
+    )
     number = models.IntegerField()
-    country = CountryField()
+    report = models.ForeignKey(
+        "PersonnelReport", related_name="info", on_delete=models.CASCADE
+    )
+
+
+class PersonnelReport(core_models.TimeStampedModel):
+
+    employment = models.ForeignKey(
+        data_models.Employment, related_name="personnel_info", on_delete=models.PROTECT
+    )
     report_date = models.DateField()
-    
+    country = CountryField()
