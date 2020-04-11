@@ -154,6 +154,7 @@
 
 #4.3.1 Change employment to department
 
+#4.3.2 Apply single method in template with JS
 Q.
  - 어떻게 해야 ordering이 된 가장 최신 값만 표기할 수 있을까?
  - 어떻게 해야지 view에서 employment 유무를 확인해서 다른 곳으로 보낼 수 있을까?

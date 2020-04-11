@@ -24,8 +24,12 @@ class RiskLevel(models.Model):
 
 class Prediction(core_models.TimeStampedModel):
 
-    employment = models.ForeignKey(
-        data_models.Employment, related_name="prediction", on_delete=models.PROTECT
+    department = models.ForeignKey(
+        data_models.Department,
+        related_name="prediction",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
     )
     country = CountryField()
     report_date = models.DateField()

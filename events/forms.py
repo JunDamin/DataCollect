@@ -15,6 +15,7 @@ class EventCreateForm(forms.ModelForm):
             "title",
             "country",
             "event_type",
+            "is_single",
             "start_date",
             "end_date",
             "description",
@@ -35,14 +36,18 @@ class EventCreateForm(forms.ModelForm):
                 .order_by("-created")[0]
                 .countries.all()
             )
+            self.fields["country"].choices = (
+                (i.code, i.korean) for i in country_choice
+            )
         else:
-            country_choice = (None, None)
-        self.fields["country"].choices = ((i.code, i.korean) for i in country_choice)
+            self.fields["country"].choices = (("None", "없음"),)
         self.fields["start_date"].initial = datetime.now()
         self.fields["end_date"].initial = datetime.now()
+        self.fields["is_single"].initial = True
 
     def save(self, *args, **kwargs):
         event = super().save(commit=False)
+        print(event.is_single)
         return event
 
 

@@ -30,7 +30,11 @@ class PersonnelInfo(core_models.TimeStampedModel):
 class PersonnelReport(core_models.TimeStampedModel):
 
     department = models.ForeignKey(
-        data_models.Department, related_name="personnel_info", on_delete=models.PROTECT
+        data_models.Department,
+        related_name="personnel_info",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
     )
     report_date = models.DateField()
     country = CountryField()

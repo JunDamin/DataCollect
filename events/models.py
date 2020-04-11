@@ -27,6 +27,7 @@ class Event(core_models.TimeStampedModel):
     start_date = models.DateField()
     end_date = models.DateField()
     description = models.TextField()
+    is_single = models.BooleanField(verbose_name="One day", default=True)
 
     author = models.ForeignKey(
         user_models.User,
