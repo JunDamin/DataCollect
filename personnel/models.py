@@ -1,6 +1,7 @@
 from django.db import models
 from django_countries.fields import CountryField
 from core import models as core_models
+from users import models as user_models
 from data import models as data_models
 
 # Create your models here.
@@ -38,3 +39,10 @@ class PersonnelReport(core_models.TimeStampedModel):
     )
     report_date = models.DateField()
     country = CountryField()
+    author = models.ForeignKey(
+        user_models.User,
+        related_name="personnel",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+    )

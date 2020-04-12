@@ -23,7 +23,7 @@ class PersonnelReportCreateForm(forms.ModelForm):
 class PersonnelInfoCreateForm(forms.ModelForm):
     class Meta:
         model = models.PersonnelInfo
-        exclude = ()
+        fields = ("personnel", "number")
 
 
 class SearchForm(forms.ModelForm):

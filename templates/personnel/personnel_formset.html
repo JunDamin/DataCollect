@@ -16,16 +16,23 @@ Personnel create
             <h4>Program</h4>
             {{ form.as_p }}
 
-            <h4>URL</h4>
+            <h4>인원정보</h4>
             {{ formset.management_form }}
-            {% for each_form in formset %}
-            <p>
-                {{ each_form }}
-            </p>
-            {% endfor %}
+            <div class="mb-3" id="items-form-container">
+                {% for each_form in formset %}
+                <div class="flex mb-3 justify-between">
+                    {{each_form.id}}
+                    <div class="w-full">{{ each_form.personnel }}</div>
+                    <div class="w-full mx-3">{{ each_form.number }}</div>
+                    <div class="input-group-append">
+                    </div>
+                </div>
+                {% endfor %}
 
+            </div>
+            <a href="#" id="add-item-button" class="btn btn-info add-item">Add Item</a>
             <p>
-                <input type="submit" value="전송" />
+                <button class="btn" type="submit">전송</button>
                 {% if object %}
                 <input type="button" value="삭제" onclick="location.href='{% url 'personnel:delete' object.id %}'" />
                 {% endif %}
@@ -33,5 +40,33 @@ Personnel create
         </form>
     </div>
 </div>
+<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script type="text/html" id="item-template">
+    <div class="flex mb-3 justify-between">
+        <div class="w-full">{{formset.empty_form.personnel}}</div>
+        <div class="w-full mx-3">{{formset.empty_form.number}}</div>
+    </div>
+    </script>
+<script>
+    $(document).ready(function () {
+        $('.add-item').click(function (ev) {
+            ev.preventDefault();
+            var count = $('#items-form-container').children().length;
+            var tmplMarkup = $('#item-template').html();
+            var compiledTmpl = tmplMarkup.replace(/__prefix__/g, count);
+            $('div#items-form-container').append(compiledTmpl);
+
+            // update form count
+            $('#id_info-TOTAL_FORMS').attr('value', count + 1);
+
+            // some animate to scroll to view our new form
+            $('html, body').animate({
+                scrollTop: $("#add-item-button").position().top - 200
+            }, 800);
+            console.log("1회 작동")
+        });
+    });
+</script>
 
 {% endblock content %}

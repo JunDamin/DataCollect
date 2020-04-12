@@ -53,6 +53,7 @@ class PersonnelReportFormsetView(
     def form_formset_valid(self, form, formset):
         formset.instance = self.object = form.save()
         formset.instance.department = self.request.user.department
+        formset.instance.author = self.request.user
         form.save()
         formset.save()
         return redirect(
@@ -82,9 +83,6 @@ class PersonnelReportEditView(UpdateView):
 
     def get_object(self, queryset=None):
         personnel = super().get_object(queryset=queryset)
-        if personnel.author.pk != self.request.user.pk:
-            raise Http404()
-
         return personnel
 
 
