@@ -10,7 +10,7 @@ from users import models as user_models
 class PersonnelReportCreateForm(forms.ModelForm):
     class Meta:
         model = models.PersonnelReport
-        fields = ("department", "report_date", "country")
+        fields = ("report_date", "country")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

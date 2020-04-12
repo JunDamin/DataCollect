@@ -31,7 +31,6 @@ class PersonnelReportFormsetView(
     )
     object = None
     template_name = "personnel/personnel_formset.html"
-    success_url = reverse_lazy("core:home")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -53,8 +52,12 @@ class PersonnelReportFormsetView(
 
     def form_formset_valid(self, form, formset):
         formset.instance = self.object = form.save()
+        formset.instance.department = self.request.user.department
+        form.save()
         formset.save()
-        return HttpResponseRedirect(self.get_success_url())
+        return redirect(
+            reverse_lazy("personnel:detail", kwargs={"pk": formset.instance.pk})
+        )
 
     def form_formset_invalid(self, form, formset):
         return self.render_to_response(
