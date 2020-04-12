@@ -39,6 +39,13 @@
             <a href="{% url 'personnel:delete' personnel.pk %}" class="btn-link">Delete personnel</a>
         </div>
         {% endif %}
+        <div>
+
+            {% for info in personnel.info.all %}
+            <span>{{info.personnel}}</span><span> {{info.number}}명</span>
+            {% endfor %}
+
+        </div>
     </div>
 </div>
 

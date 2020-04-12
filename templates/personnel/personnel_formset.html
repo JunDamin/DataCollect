@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+Personnel create
+{% endblock page_title %}
+
+{% block search-bar %}
+{% endblock search-bar %}
+{% block content %}
+
+<div class="container mx-auto flex justify-around pb-10">
+    <div class="col-md-4">
+        <form method="post">
+            {% csrf_token %}
+
+            <h4>Program</h4>
+            {{ form.as_p }}
+
+            <h4>URL</h4>
+            {{ formset.management_form }}
+            {% for each_form in formset %}
+            <p>
+                {{ each_form }}
+            </p>
+            {% endfor %}
+
+            <p>
+                <input type="submit" value="전송" />
+                {% if object %}
+                <input type="button" value="삭제" onclick="location.href='{% url 'personnel:delete' object.id %}'" />
+                {% endif %}
+            </p>
+        </form>
+    </div>
+</div>
+
+{% endblock content %}

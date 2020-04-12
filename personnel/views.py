@@ -1,30 +1,65 @@
 from django.http import Http404
-from django.views.generic import ListView, DetailView, View, UpdateView, FormView
+from django.http import HttpResponseRedirect
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, View, UpdateView, CreateView
+from django.views.generic.edit import FormView, ModelFormMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.forms import inlineformset_factory
 from django.shortcuts import render, redirect, reverse
 from django.core.paginator import Paginator
+from django.db import transaction
 from users import mixins as user_mixins
 from . import models, forms
 
 
-class PersonnelReportCreateView(user_mixins.LoggedInOnlyView, FormView):
+class PersonnelReportListView(ListView):
+    model = models.PersonnelReport
 
+
+class PersonnelReportFormsetView(
+    user_mixins.LoggedInOnlyView, ModelFormMixin, FormView
+):
     form_class = forms.PersonnelReportCreateForm
-    template_name = "personnel/personnel_create.html"
+    formset_class = inlineformset_factory(
+        parent_model=models.PersonnelReport,
+        model=models.PersonnelInfo,
+        form=forms.PersonnelInfoCreateForm,
+        extra=1,
+        can_order=True,
+        can_delete=True,
+    )
+    object = None
+    template_name = "personnel/personnel_formset.html"
+    success_url = reverse_lazy("core:home")
 
-    def get_form_kwargs(self):
-        kwargs = super(PersonnelReportCreateView, self).get_form_kwargs()
-        user = self.request.user
-        kwargs["user"] = user
-        return kwargs
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if "formset" not in kwargs:
+            context["formset"] = self.get_formset
+        return context
 
-    def form_valid(self, form):
-        personnel = form.save()
-        personnel.author = self.request.user
-        personnel.department = self.request.user.department
-        personnel.save()
-        return redirect(reverse("personnel:detail", kwargs={"pk": personnel.pk}))
+    def get_formset(self, **kwargs):
+        kwargs.update(instance=self.object)
+        return self.formset_class(**kwargs)
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        formset = self.get_formset(data=self.request.POST)
+        if form.is_valid() and formset.is_valid():
+            return self.form_formset_valid(form, formset)
+        else:
+            return self.form_formset_invalid(form, formset)
+
+    def form_formset_valid(self, form, formset):
+        formset.instance = self.object = form.save()
+        formset.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def form_formset_invalid(self, form, formset):
+        return self.render_to_response(
+            self.get_context_data(form=form, formset=formset)
+        )
 
 
 class PersonnelReportDetailView(DetailView):

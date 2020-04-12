@@ -1,33 +1,50 @@
 {% extends "base.html" %}
 
 {% block page_title %}
-Events create
+Personnel create
 {% endblock page_title %}
 
 {% block search-bar %}
 {% endblock search-bar %}
 {% block content %}
 
+<div class="container mx-auto flex justify-around pb-10">
+    <div class="col-md-4">
+        <form action="" method="post">{% csrf_token %}
+            {{ form.as_p }}
 
+            <table class="table">
+                {{ personnelinfos.management_form }}
 
-<div class="container lg:w-5/12 md:w-1/2 xl:w-1/2 mx-auto my-10 flex flex-col items-center border p-6 border-gray-400">
-
-    {% include 'mixins/article/article_form.html' with form=form cta="Create Article" %}
-
+                {% for form in personnelinfos.forms %}
+                {% if forloop.first %}
+                <thead>
+                    <tr>
+                        {% for field in form.visible_fields %}
+                        <th>{{ field.label|capfirst }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                {% endif %}
+                <tr>
+                    {% for field in form.visible_fields %}
+                    <td>
+                        {# Include the hidden fields in the form #}
+                        {% if forloop.first %}
+                        {% for hidden in form.hidden_fields %}
+                        {{ hidden }}
+                        {% endfor %}
+                        {% endif %}
+                        {{ field.errors.as_ul }}
+                        {{ field }}
+                    </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </table>
+            <input type="submit" value="Save" /><a>back to the list</a>
+        </form>
+    </div>
 </div>
-<script>
-    window.onload = action
-    let single = document.getElementById('id_is_single');
-    single.addEventListener("click", action);
-    function action() {
-        let child = document.getElementById('id_end_date');
-        let mother = child.parentNode;
-        if (single.checked) {
-            mother.style.visibility = 'hidden';
-        }
-        else {
-            mother.style.visibility = 'visible';
-        }
-    }
-</script>
+
 {% endblock content %}
