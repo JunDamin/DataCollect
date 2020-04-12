@@ -72,18 +72,16 @@ class PersonnelReportDetailView(DetailView):
     context_object_name = "personnel"
 
 
-class PersonnelReportEditView(UpdateView):
+class PersonnelReportEditView(PersonnelReportFormsetView):
     model = models.PersonnelReport
-    template_name = "personnel/personnel_edit.html"
-    fields = (
-        "department",
-        "country",
-        "report_date",
-    )
 
-    def get_object(self, queryset=None):
-        personnel = super().get_object(queryset=queryset)
-        return personnel
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super().get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super().post(request, *args, **kwargs)
 
 
 @login_required
