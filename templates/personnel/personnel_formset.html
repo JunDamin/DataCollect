@@ -24,17 +24,21 @@ Personnel create
                     {{each_form.id}}
                     <div class="w-full">{{ each_form.personnel }}</div>
                     <div class="w-full mx-3">{{ each_form.number }}</div>
+                    <div class="w-1/4 mx-3">{{ each_form.DELETE.label }}
+                        {{ each_form.DELETE }}</div>
                     <div class="input-group-append">
                     </div>
                 </div>
                 {% endfor %}
 
             </div>
-            <a href="#" id="add-item-button" class="btn btn-info add-item">Add Item</a>
+            <button href="#" id="add-item-button" class="w-full btn text-teal-500 font-bold btn-info add-item">Add
+                Item</button>
             <p>
-                <button class="btn" type="submit">전송</button>
+                <button class="btn bg-teal-500 text-white" type="submit">전송</button>
                 {% if object %}
-                <input type="button" value="삭제" onclick="location.href='{% url 'personnel:delete' object.id %}'" />
+                <input type="button" value="삭제" class="btn bg-red-500 text-white"
+                    onclick="location.href='{% url 'personnel:delete' object.id %}'" />
                 {% endif %}
             </p>
         </form>
@@ -46,6 +50,8 @@ Personnel create
     <div class="flex mb-3 justify-between">
         <div class="w-full">{{formset.empty_form.personnel}}</div>
         <div class="w-full mx-3">{{formset.empty_form.number}}</div>
+        <div class="w-1/4 mx-3">{{ formset.empty_form.DELETE.label }}
+            {{ formset.empty_form.DELETE }}</div>
     </div>
     </script>
 <script>
