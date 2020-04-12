@@ -2,7 +2,7 @@
 
 
 {% block page_title %}
-안전예보
+주요일정 정보
 {% endblock page_title %}
 
 {% block content %}
@@ -10,11 +10,11 @@
 <div class="container mx-auto pb-10">
     <div class="justify-between flex mb-3">
         <div class='w-1/2 flex'>
-            <a href="{% url 'predictions:create' %}" class="btn bg-red-500 my-0 mx-3 text-white">신규작성</a>
+            <a href="{% url 'events:create' %}" class="btn bg-red-500 my-0 mx-3 text-white">신규작성</a>
         </div>
         <div class='w-full align-middle'>
             <div>
-                <form method="get" action="{% url "prediction:search" %}" class="w-9/12 inline-block align-middle">
+                <form method="get" action="{% url "events:search" %}" class="w-9/12 inline-block align-middle">
                     <input
                         class="search-box border inline-block align-middle px-5 w-full font-medium text-gray-900 placeholder-gray-600 py-3 rounded-sm w-64 shadow-md hover:shadow-lg focus:outline-none"
                         name="title" placeholder="Search by Title" />
@@ -23,7 +23,7 @@
         </div>
     </div>
     <div class="flex flex-wrap justify-center mb-10">
-        {% for event in prediction %}
+        {% for event in events %}
         {% include 'mixins/events/event_card.html' with event=event %}
         {% endfor %}
     </div>
@@ -45,4 +45,5 @@
 
     </div>
 </div>
+
 {% endblock content %}

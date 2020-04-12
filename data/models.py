@@ -32,6 +32,21 @@ class Department(core_models.TimeStampedModel):
     def __str__(self):
         return self.name
 
+    def get_latest_prediction(self):
+        print(self.prediction.filter().order_by("-created"))
+        if self.prediction.filter().order_by("-created"):
+            print(self.prediction.filter().order_by("-created")[0])
+            return self.prediction.filter().order_by("-created")[0]
+        else:
+            return None
+
+    def get_latest_personnel_report(self):
+        print(self.personnel.filter().order_by("-created"))
+        if self.personnel.filter().order_by("-created"):
+            return self.personnel.filter().order_by("-created")[0]
+        else:
+            return None
+
 
 class DepartmentDetail(core_models.TimeStampedModel):
 

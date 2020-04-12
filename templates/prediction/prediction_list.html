@@ -10,7 +10,7 @@
 <div class="container mx-auto pb-10">
     <div class="justify-between flex mb-3">
         <div class='w-1/2 flex'>
-            <a href="{% url 'predictions:create' %}" class="btn bg-red-500 my-0 mx-3 text-white">신규작성</a>
+            <a href="{% url 'prediction:create' %}" class="btn bg-red-500 my-0 mx-3 text-white">신규작성</a>
         </div>
         <div class='w-full align-middle'>
             <div>
@@ -23,9 +23,21 @@
         </div>
     </div>
     <div class="flex flex-wrap justify-center mb-10">
-        {% for event in prediction %}
-        {% include 'mixins/events/event_card.html' with event=event %}
-        {% endfor %}
+        <table class="border">
+            {% for department in departments %}
+            {% if department.get_latest_prediction %}
+            <tr>
+                <td>{{department.get_latest_prediction.country.name}}</td>
+                <td>{{department.get_latest_prediction.risk_type}}</td>
+                <td>{{department.get_latest_prediction.risk_level}}</td>
+                <td>{{department.get_latest_prediction.report_date}}</td>
+                <td>{{department.get_latest_prediction.description}}</td>
+                <td>{{department.get_latest_prediction.action}}</td>
+            </tr>
+            {% endif %}
+
+            {% endfor %}
+        </table>
     </div>
     <div class="flex items-center justify-center mx-auto container">
         {% if page_obj.has_previous %}
@@ -45,4 +57,5 @@
 
     </div>
 </div>
+
 {% endblock content %}

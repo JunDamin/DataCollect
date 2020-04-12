@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+Search
+{% endblock page_title %}
+
+{% block seearch-bar %}
+{% endblock seearch-bar %}
+
+
+{% block content %}
+
+    <div class="container lg:w-5/12 md:w-1/2 xl:w-1/2 mx-auto my-10 flex flex-col items-center border p-6 border-gray-400">
+        <h2 class="text-xl"> Search!</h2>
+
+        <form method="get" action="{% url "articles:search" %}">
+            {{form.as_p}}
+            <button class="btn bg-teal-500 mt-5 text-white">Search</button>
+        </form>
+    </div>
+    <div class="container flex flex-col items-center justify-center mx-auto">
+
+        <h2 class="text-xl mx-auto mb-5">Search Results</h2>
+        {% for article in articles %}
+            {% include 'mixins/article_card.html' with article=article %}
+        {% endfor %}
+        {% if not articles %}There is nothing matched{% endif %}
+    </div>
+
+{% endblock content %}

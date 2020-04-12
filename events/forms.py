@@ -57,7 +57,6 @@ class SearchForm(forms.ModelForm):
             "title",
             "country",
             "event_type",
-            "description",
         )
 
     def __init__(self, *args, **kwargs):

@@ -4,6 +4,7 @@ from . import views
 app_name = "prediction"
 
 urlpatterns = [
+    path("list/", views.PredictionListView.as_view(), name="list",),
     path("create/", views.PredictionCreateView.as_view(), name="create"),
     path("<int:pk>", views.PredictionDetailView.as_view(), name="detail"),
     path("<int:pk>/edit/", views.predictionEditView.as_view(), name="edit"),

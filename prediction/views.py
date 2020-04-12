@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect, reverse
 from django.core.paginator import Paginator
 from users import mixins as user_mixins
+from data import models as data_models
 from . import models, forms
 
 
@@ -108,3 +109,12 @@ class PredictionSearchView(View):
             form = forms.SearchForm()
 
             return render(request, "prediction/search.html", {"form": form})
+
+
+class PredictionListView(ListView):
+    model = data_models.Department
+    paginate_by = 12
+    paginate_orphans = 5
+    ordering = "pk"
+    context_object_name = "departments"
+    template_name = "prediction/prediction_list.html"

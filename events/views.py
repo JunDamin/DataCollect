@@ -68,6 +68,15 @@ def delete_event(request, pk):
         return redirect((reverse("core:home")))
 
 
+class EventListView(ListView):
+
+    model = models.Event
+    paginate_by = 12
+    paginate_orphans = 5
+    ordering = "created"
+    context_object_name = "events"
+
+
 class EventSearchView(View):
     def get(self, request):
 
@@ -78,7 +87,6 @@ class EventSearchView(View):
             title = form.cleaned_data.get("title")
             country = form.cleaned_data.get("country")
             event_type = form.cleaned_data.get("event_type")
-            description = form.cleaned_data.get("description")
 
             filter_args = {}
 
@@ -91,9 +99,6 @@ class EventSearchView(View):
             if event_type:
                 filter_args["event_type"] = event_type
 
-            if description:
-                filter_args["description__contains"] = description
-
             qs = models.Event.objects.filter(**filter_args).order_by("-created")
 
             paginator = Paginator(qs, 10, orphans=5)
@@ -102,10 +107,12 @@ class EventSearchView(View):
 
             event = paginator.get_page(page)
 
-            return render(request, "event/search.html", {"form": form, "event": event},)
+            return render(
+                request, "events/search.html", {"form": form, "event": event},
+            )
 
         else:
 
             form = forms.SearchForm()
 
-            return render(request, "event/search.html", {"form": form})
+            return render(request, "events/search.html", {"form": form})

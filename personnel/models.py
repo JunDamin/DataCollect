@@ -32,7 +32,7 @@ class PersonnelReport(core_models.TimeStampedModel):
 
     department = models.ForeignKey(
         data_models.Department,
-        related_name="personnel_info",
+        related_name="personnel",
         on_delete=models.PROTECT,
         null=True,
         blank=True,

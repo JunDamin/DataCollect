@@ -11,6 +11,7 @@ from django.core.paginator import Paginator
 from django.db import transaction
 from users import mixins as user_mixins
 from . import models, forms
+from data import models as data_models
 
 
 class PersonnelReportListView(ListView):
@@ -105,7 +106,10 @@ def delete_personnel_report(request, pk):
         return redirect((reverse("core:home")))
 
 
-class PersonnelReportListView(ListView):
-    model = models.PersonnelReport
-    template_name = "personnel/personnel_detail.html"
-    context_object_name = "personnel"
+class PersonnelListView(ListView):
+    model = data_models.Department
+    paginate_by = 12
+    paginate_orphans = 5
+    ordering = "pk"
+    context_object_name = "departments"
+    template_name = "personnel/personnel_list.html"
