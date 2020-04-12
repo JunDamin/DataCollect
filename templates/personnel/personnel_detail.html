@@ -11,11 +11,10 @@
         <div class="flex w-full justify-between border-section">
             <div class="pb-1 content-around">
                 <div class="flex justify-between box-border">
-                    <h4 class="text-3xl font-medium h-full">{{personnel.department}}</h4>
+                    <h4 class="text-3xl font-medium h-full">{{personnel.department}} 파견현황</h4>
                 </div>
                 <div class="justify-between w-full overflow-hidden ">
                     <span class="text-gray-700 font-bold">{{personnel.country.name}}</span>
-                    <span class="text-teal-800 font-bold px-5">{{personnel.personnel_type}}</span>
                 </div>
                 <div>
                     <span class="text-sm text-gray-500 font-bold">{{personnel.report_date}}</span>
@@ -28,10 +27,25 @@
                 </a>
             </div>
         </div>
-        <div class="border-section">
-            <p class="w-full p-5">
-                {{personnel.description|linebreaks}}
-            </p>
+        <div class="border-section flex mx-auto justify-between w-1/4">
+            <div>
+                {% for info in personnel.info.all %}
+                <div>
+                    <span>{{info.personnel}}</span>
+                </div>
+                {% endfor %}
+            </div>
+            <div>
+                {% for info in personnel.info.all %}
+                <div>
+                    <span>{{info.number}}명</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="border-section flex mx-auto justify-between w-1/4">
+            <div>합계</div>
+            <div>{{personnel.sum}}명</div>
         </div>
         {% if user == personnel.author %}
         <div class="flex flex-col w-full">
@@ -39,13 +53,7 @@
             <a href="{% url 'personnel:delete' personnel.pk %}" class="btn-link">Delete personnel</a>
         </div>
         {% endif %}
-        <div>
 
-            {% for info in personnel.info.all %}
-            <span>{{info.personnel}}</span><span> {{info.number}}명</span>
-            {% endfor %}
-
-        </div>
     </div>
 </div>
 

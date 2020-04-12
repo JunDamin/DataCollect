@@ -46,3 +46,6 @@ class PersonnelReport(core_models.TimeStampedModel):
         null=True,
         blank=True,
     )
+
+    def sum(self):
+        return self.info.all().aggregate(models.Sum("number")).get("number__sum")

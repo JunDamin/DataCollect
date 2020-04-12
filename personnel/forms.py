@@ -12,12 +12,25 @@ class PersonnelReportCreateForm(forms.ModelForm):
         model = models.PersonnelReport
         fields = ("report_date", "country")
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, user, *args, **kwargs):
+        super(PersonnelReportCreateForm, self).__init__(*args, **kwargs)
         if self.instance.pk:
             delete_url = reverse_lazy(
                 "personnel:delete", kwargs={"pk": self.instance.pk}
             )
+        self.fields["report_date"].initial = datetime.now()
+        if user.department:
+            country_choices = (
+                user.department.department_detail.filter()
+                .order_by("-created")[0]
+                .countries.all()
+            )
+            self.fields["country"].choices = [
+                (i.code, i.korean) for i in country_choices
+            ]
+            print(len(country_choices))
+        else:
+            self.fields["country"].choices = (("None", "없음"),)
 
 
 class PersonnelInfoCreateForm(forms.ModelForm):

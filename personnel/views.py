@@ -32,6 +32,12 @@ class PersonnelReportFormsetView(
     object = None
     template_name = "personnel/personnel_formset.html"
 
+    def get_form_kwargs(self):
+        kwargs = super(PersonnelReportFormsetView, self).get_form_kwargs()
+        user = self.request.user
+        kwargs["user"] = user
+        return kwargs
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         if "formset" not in kwargs:
@@ -97,3 +103,9 @@ def delete_personnel_report(request, pk):
         return redirect((reverse("core:home")))
     except models.PersonnelReport.DoesNotExist:
         return redirect((reverse("core:home")))
+
+
+class PersonnelReportListView(ListView):
+    model = models.PersonnelReport
+    template_name = "personnel/personnel_detail.html"
+    context_object_name = "personnel"
