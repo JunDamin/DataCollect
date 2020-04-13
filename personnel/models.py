@@ -19,13 +19,16 @@ class PersonnelType(core_models.TimeStampedModel):
 
 class PersonnelInfo(core_models.TimeStampedModel):
 
-    personnel = models.ForeignKey(
+    personnel_type = models.ForeignKey(
         "PersonnelType", related_name="info", on_delete=models.PROTECT
     )
     number = models.IntegerField()
     report = models.ForeignKey(
         "PersonnelReport", related_name="info", on_delete=models.CASCADE
     )
+
+    def __str__(self):
+        return self.personnel_type.name
 
 
 class PersonnelReport(core_models.TimeStampedModel):

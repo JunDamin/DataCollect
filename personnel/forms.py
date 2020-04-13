@@ -28,7 +28,6 @@ class PersonnelReportCreateForm(forms.ModelForm):
             self.fields["country"].choices = [
                 (i.code, i.korean) for i in country_choices
             ]
-            print(len(country_choices))
         else:
             self.fields["country"].choices = (("None", "없음"),)
 
@@ -36,7 +35,7 @@ class PersonnelReportCreateForm(forms.ModelForm):
 class PersonnelInfoCreateForm(forms.ModelForm):
     class Meta:
         model = models.PersonnelInfo
-        fields = ("personnel", "number")
+        fields = ("personnel_type", "number")
 
 
 class SearchForm(forms.ModelForm):

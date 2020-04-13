@@ -22,8 +22,10 @@
             {% if department.get_latest_personnel_report %}
             <tr>
                 <td>{{department.get_latest_personnel_report.country.name}}</td>
-                <td>{{department.get_latest_personnel_report.report_date}}</td>
-                <td>{{department.get_latest_personnel_report.sum}}</td>
+                <td>{{department.get_latest_personnel_report.report_date|date:"Y-m-d"}}</td>
+                <td>{{department.get_latest_personnel_report.sum}} 명</td>
+                <td>{% for info in department.get_latest_personnel_report.info.all %} {{info.personnel_type}}
+                    {{info.number}} 명 {% endfor %}</td>
             </tr>
             {% endif %}
 

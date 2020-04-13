@@ -22,16 +22,16 @@ class PersonnelTypeAdmin(ImportExportMixin, admin.ModelAdmin):
 
 @admin.register(models.PersonnelInfo)
 class PersonnelInfoAdmin(ImportExportMixin, admin.ModelAdmin):
-    fieldsets = (("Basic Info", {"fields": ("personnel", "number", "report",)},),)
+    fieldsets = (("Basic Info", {"fields": ("personnel_type", "number", "report",)},),)
 
     list_display = (
-        "personnel",
+        "personnel_type",
         "number",
         "report",
     )
 
     list_filter = (
-        "personnel",
+        "personnel_type",
         "number",
         "report",
     )
