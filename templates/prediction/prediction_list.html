@@ -22,40 +22,30 @@
             </div>
         </div>
     </div>
-    <div class="flex flex-wrap justify-center mb-10">
-        <table class="border">
-            {% for department in departments %}
-            {% if department.get_latest_prediction %}
-            <tr>
-                <td>{{department.get_latest_prediction.country.name}}</td>
-                <td>{{department.get_latest_prediction.risk_type}}</td>
-                <td>{{department.get_latest_prediction.risk_level}}</td>
-                <td>{{department.get_latest_prediction.report_date}}</td>
-                <td>{{department.get_latest_prediction.description}}</td>
-                <td>{{department.get_latest_prediction.action}}</td>
-            </tr>
-            {% endif %}
-
-            {% endfor %}
-        </table>
-    </div>
-    <div class="flex items-center justify-center mx-auto container">
-        {% if page_obj.has_previous %}
-        <a href="?page={{page_obj.previous_page_number}}" class="text-teal-500">
-            <i class="fas fa-arrow-left fa-lg"></i>
-        </a>
+    <table class="table-fixed">
+        <tr>
+            <td class="border p-2  text-center xl:truncate font-medium">사무소명</td>
+            <td class="border p-2  text-center xl:truncate font-medium">보고일</td>
+            <td class="border p-2  text-center xl:truncate font-medium">위험종류</td>
+            <td class="border p-2  text-center xl:truncate font-medium">위험수준</td>
+            <td class="border p-2  text-center font-medium">안전전망</td>
+            <td class="border p-2  text-center font-medium">조치사항</td>
+        </tr>
+        {% for department in departments %}
+        {% if department.get_latest_prediction %}
+        <tr>
+            <td class="border p-2  text-center xl:truncate">{{department.name}}</td>
+            <td class="border p-2  text-center xl:truncate">{{department.get_latest_prediction.report_date|date:"m-d"}}
+            </td>
+            <td class="border p-2  text-center xl:truncate">{{department.get_latest_prediction.risk_type}}</td>
+            <td class="border p-2  text-center xl:truncate">{{department.get_latest_prediction.risk_level}}</td>
+            <td class="border p-2 ">{{department.get_latest_prediction.description|linebreaks}}</td>
+            <td class="border p-2 ">{{department.get_latest_prediction.action|linebreaks}}</td>
+        </tr>
         {% endif %}
 
-        <span class="mx-3 font-medium text-lg">{{page_obj.number}} of {{page_obj.paginator.num_pages}}</span>
-
-        {% if page_obj.has_next %}
-        <a href="?page={{page_obj.next_page_number}}" class="text-teal-500">
-            <i class="fas fa-arrow-right fa-lg"></i>
-        </a>
-        {% endif %}
-
-
-    </div>
+        {% endfor %}
+    </table>
 </div>
 
 {% endblock content %}

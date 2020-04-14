@@ -113,8 +113,6 @@ class PredictionSearchView(View):
 
 class PredictionListView(ListView):
     model = data_models.Department
-    paginate_by = 12
-    paginate_orphans = 5
     ordering = "pk"
     context_object_name = "departments"
     template_name = "prediction/prediction_list.html"

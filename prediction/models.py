@@ -52,3 +52,10 @@ class Prediction(core_models.TimeStampedModel):
 
     def get_absolute_url(self):
         return reverse("prediction:detail", kwargs={"pk": self.pk})
+
+    def get_fields(self):
+        return [
+            (field, field.value_to_string(self))
+            for field in Prediction._meta.fields if field.name in ["country", "report_date", "risk_type", "risk_level", "description", "action", "author"]
+        ]
+

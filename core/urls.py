@@ -1,8 +1,8 @@
 from django.urls import path
-from data import views as data_views
+from prediction import views as prediction_views
 
 app_name = "core"
 
 urlpatterns = [
-    path("", data_views.HomeView.as_view(), name="home"),
+    path("", prediction_views.PredictionListView.as_view(), name="home"),
 ]
