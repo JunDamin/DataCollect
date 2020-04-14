@@ -1,6 +1,5 @@
 from django.db import models
 from django.urls import reverse
-from django_countries.fields import CountryField
 from core import models as core_models
 from data import models as data_models
 from users import models as user_models
@@ -31,7 +30,9 @@ class Prediction(core_models.TimeStampedModel):
         null=True,
         blank=True,
     )
-    country = CountryField()
+    country = models.ForeignKey(
+        data_models.Country, related_name="prediction", on_delete=models.PROTECT
+    )
     report_date = models.DateField()
 
     risk_type = models.ForeignKey(

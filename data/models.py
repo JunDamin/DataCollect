@@ -26,7 +26,9 @@ class Department(core_models.TimeStampedModel):
 
     name = models.CharField(max_length=255)
     koica_code = models.CharField(max_length=255)
-    location = CountryField()
+    location = models.ForeignKey(
+        Country, related_name="departments", on_delete=models.PROTECT
+    )
     is_active = models.BooleanField(verbose_name="Active", default=True)
 
     def __str__(self):

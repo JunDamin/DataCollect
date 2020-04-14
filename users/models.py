@@ -24,7 +24,7 @@ class User(AbstractUser):
     department = models.ForeignKey(
         data_models.Department,
         related_name="user",
-        on_delete=models.PROTECT,
+        on_delete=models.SET_NULL,
         blank=True,
         null=True,
     )

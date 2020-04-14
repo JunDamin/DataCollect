@@ -1,5 +1,4 @@
 from django.db import models
-from django_countries.fields import CountryField
 from core import models as core_models
 from users import models as user_models
 from data import models as data_models
@@ -40,7 +39,9 @@ class PersonnelReport(core_models.TimeStampedModel):
         null=True,
         blank=True,
     )
-    country = CountryField()
+    country = models.ForeignKey(
+        data_models.Country, related_name="personnel_report", on_delete=models.PROTECT
+    )
     report_date = models.DateField(verbose_name="보고기준일")
 
     author = models.ForeignKey(
