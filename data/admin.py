@@ -30,7 +30,7 @@ class DepartmentResource(resources.ModelResource):
             "location__korean",
             "is_active",
         )
-        export = (
+        export_order = (
             "id",
             "name",
             "koica_code",

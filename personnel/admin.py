@@ -81,14 +81,17 @@ class PersonnelReportAdmin(ImportExportMixin, admin.ModelAdmin):
     resource_class = PersonnelReportResource
     fieldsets = (
         ("Basic Info", {"fields": ("department", "report_date", "country",)},),
+        ("List Info", {"fields": models.PersonnelReport.TOTAL_LIST},),
+        ("etc", {"fields": ("description",)},),
     )
-
-    inlines = [PersonnelInfoInline]
 
     list_display = (
         "department",
         "report_date",
         "country",
+        "get_office_subtotal",
+        "get_field_subtotal",
+        "get_total",
     )
 
     list_filter = (
