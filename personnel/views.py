@@ -14,81 +14,58 @@ from . import models, forms
 from data import models as data_models
 
 
-class PersonnelReportListView(ListView):
-    model = models.PersonnelReport
+class PersonnelReportCreateView(user_mixins.LoggedInOnlyView, FormView):
 
-
-class PersonnelReportFormsetView(
-    user_mixins.LoggedInOnlyView, ModelFormMixin, FormView
-):
-    form_class = forms.PersonnelReportCreateForm
-    formset_class = inlineformset_factory(
-        parent_model=models.PersonnelReport,
-        model=models.PersonnelInfo,
-        form=forms.PersonnelInfoCreateForm,
-        extra=1,
-        can_order=True,
-        can_delete=True,
-    )
-    object = None
-    template_name = "personnel/personnel_formset.html"
+    form_class = forms.PersonnelCreateForm
+    template_name = "personnel/personnel_create.html"
 
     def get_form_kwargs(self):
-        kwargs = super(PersonnelReportFormsetView, self).get_form_kwargs()
+        kwargs = super(PersonnelReportCreateView, self).get_form_kwargs()
         user = self.request.user
         kwargs["user"] = user
         return kwargs
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        if "formset" not in kwargs:
-            context["formset"] = self.get_formset
-        return context
-
-    def get_formset(self, **kwargs):
-        kwargs.update(instance=self.object)
-        return self.formset_class(**kwargs)
-
-    def post(self, request, *args, **kwargs):
-        form = self.get_form()
-        formset = self.get_formset(data=self.request.POST)
-        if form.is_valid() and formset.is_valid():
-            return self.form_formset_valid(form, formset)
-        else:
-            return self.form_formset_invalid(form, formset)
-
-    def form_formset_valid(self, form, formset):
-        formset.instance = self.object = form.save()
-        formset.instance.department = self.request.user.department
-        formset.instance.author = self.request.user
-        form.save()
-        formset.save()
-        return redirect(
-            reverse_lazy("personnel:detail", kwargs={"pk": formset.instance.pk})
-        )
-
-    def form_formset_invalid(self, form, formset):
-        return self.render_to_response(
-            self.get_context_data(form=form, formset=formset)
-        )
+    def form_valid(self, form):
+        personnel = form.save()
+        personnel.author = self.request.user
+        personnel.department = self.request.user.department
+        personnel.save()
+        return redirect(reverse("personnel:detail", kwargs={"pk": personnel.pk}))
 
 
 class PersonnelReportDetailView(DetailView):
     model = models.PersonnelReport
-    template_name = "personnel/personnel_detail.html"
-    context_object_name = "personnel"
 
 
-class PersonnelReportEditView(PersonnelReportFormsetView):
+class PersonnelReportEditView(UpdateView):
     model = models.PersonnelReport
+    template_name = "personnel/personnel_edit.html"
+    fields = (
+        "report_date",
+        "country",
+        "koica",
+        "koica_admin",
+        "v_codi",
+        "p_codi",
+        "yp",
+        "local_v",
+        "local_p",
+        "koica_v",
+        "advisor",
+        "kmco",
+        "global_doctor",
+        "etc_v",
+        "project_koica",
+        "project_etc",
+        "description",
+    )
 
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        return super().get(request, *args, **kwargs)
+    def get_object(self, queryset=None):
+        personnel = super().get_object(queryset=queryset)
+        if personnel.author.pk != self.request.user.pk:
+            raise Http404()
 
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        return super().post(request, *args, **kwargs)
+        return personnel
 
 
 @login_required
@@ -106,10 +83,8 @@ def delete_personnel_report(request, pk):
         return redirect((reverse("core:home")))
 
 
-class PersonnelListView(ListView):
+class PersonnelReportListView(ListView):
     model = data_models.Department
-    paginate_by = 12
-    paginate_orphans = 5
     ordering = "pk"
     context_object_name = "departments"
     template_name = "personnel/personnel_list.html"

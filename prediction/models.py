@@ -33,6 +33,7 @@ class Prediction(core_models.TimeStampedModel):
     )
     country = CountryField()
     report_date = models.DateField()
+
     risk_type = models.ForeignKey(
         RiskType, related_name="prediction", on_delete=models.PROTECT
     )
@@ -56,6 +57,15 @@ class Prediction(core_models.TimeStampedModel):
     def get_fields(self):
         return [
             (field, field.value_to_string(self))
-            for field in Prediction._meta.fields if field.name in ["country", "report_date", "risk_type", "risk_level", "description", "action", "author"]
+            for field in Prediction._meta.fields
+            if field.name
+            in [
+                "country",
+                "report_date",
+                "risk_type",
+                "risk_level",
+                "description",
+                "action",
+                "author",
+            ]
         ]
-
