@@ -55,6 +55,21 @@ class PersonnelReportResource(resources.ModelResource):
                 "author",
                 "author__first_name",
                 "country",
+                "country__korean",
+            ]
+            + models.PersonnelReport.TOTAL_LIST
+            + ["description"]
+        )
+        export_order = (
+            [
+                "id",
+                "department",
+                "department__name",
+                "report_date",
+                "author",
+                "author__first_name",
+                "country",
+                "country__korean",
             ]
             + models.PersonnelReport.TOTAL_LIST
             + ["description"]

@@ -1,4 +1,5 @@
 from django.contrib import admin
+from import_export import resources
 from import_export.admin import ImportExportMixin
 from . import models
 
@@ -18,8 +19,30 @@ class DepartmentDetailInline(admin.TabularInline):
     extra = 0
 
 
+class DepartmentResource(resources.ModelResource):
+    class Meta:
+        model = models.Department
+        fields = (
+            "id",
+            "name",
+            "koica_code",
+            "location",
+            "location__korean",
+            "is_active",
+        )
+        export = (
+            "id",
+            "name",
+            "koica_code",
+            "location",
+            "location__korean",
+            "is_active",
+        )
+
+
 @admin.register(models.Department)
 class DepartmentAdmin(ImportExportMixin, admin.ModelAdmin):
+    resource_class = DepartmentResource
     fieldsets = (("Basic Info", {"fields": ("name", "koica_code", "location",)},),)
 
     inlines = [DepartmentDetailInline]

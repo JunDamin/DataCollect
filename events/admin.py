@@ -1,4 +1,5 @@
 from django.contrib import admin
+from import_export import resources
 from import_export.admin import ImportExportMixin
 from . import models
 
@@ -13,8 +14,46 @@ class ItemAdmin(ImportExportMixin, admin.ModelAdmin):
     list_display = ("name", "description")
 
 
+class EventResource(resources.ModelResource):
+    class Meta:
+        model = models.Event
+        fields = (
+            "id",
+            "title",
+            "country",
+            "country__korean",
+            "event_type",
+            "event_type__name",
+            "start_date",
+            "is_single",
+            "end_date",
+            "description",
+            "author",
+            "author__first_name",
+            "department",
+            "department__name",
+        )
+        export_order = (
+            "id",
+            "title",
+            "country",
+            "country__korean",
+            "event_type",
+            "event_type__name",
+            "start_date",
+            "is_single",
+            "end_date",
+            "description",
+            "author",
+            "author__first_name",
+            "department",
+            "department__name",
+        )
+
+
 @admin.register(models.Event)
 class EventAdmin(ImportExportMixin, admin.ModelAdmin):
+    resource_class = EventResource
 
     """ Item Admin Definition """
 
