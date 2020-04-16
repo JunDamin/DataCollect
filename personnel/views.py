@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.forms import inlineformset_factory
 from django.shortcuts import render, redirect, reverse
 from django.core.paginator import Paginator
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
 from users import mixins as user_mixins
 from . import models, forms
@@ -29,6 +30,12 @@ class PersonnelReportCreateView(user_mixins.LoggedInOnlyView, FormView):
         personnel = form.save()
         personnel.author = self.request.user
         personnel.department = self.request.user.department
+        try:
+            print(self.request.user.department.latest_report)
+            self.request.user.department.latest_report.latest_report_id = None
+            self.request.user.department.latest_report.save()
+        except ObjectDoesNotExist:
+            pass
         personnel.latest_report = self.request.user.department
         personnel.save()
         return redirect(reverse("personnel:detail", kwargs={"pk": personnel.pk}))

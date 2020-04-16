@@ -8,9 +8,6 @@ from users import models as user_models
 
 
 class PersonnelCreateForm(forms.ModelForm):
-
-    country = forms.ChoiceField(required=True)
-
     class Meta:
         model = models.PersonnelReport
         fields = (

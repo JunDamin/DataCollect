@@ -56,6 +56,7 @@ class PersonnelReportResource(resources.ModelResource):
                 "author__first_name",
                 "country",
                 "country__korean",
+                "latest_report",
             ]
             + models.PersonnelReport.TOTAL_LIST
             + ["description"]
@@ -65,6 +66,7 @@ class PersonnelReportResource(resources.ModelResource):
                 "id",
                 "department",
                 "department__name",
+                "latest_report",
                 "report_date",
                 "author",
                 "author__first_name",
@@ -82,13 +84,14 @@ class PersonnelReportAdmin(ImportExportMixin, admin.ModelAdmin):
     fieldsets = (
         ("Basic Info", {"fields": ("department", "report_date", "country",)},),
         ("List Info", {"fields": models.PersonnelReport.TOTAL_LIST},),
-        ("etc", {"fields": ("description",)},),
+        ("etc", {"fields": ("description", "latest_report")},),
     )
 
     list_display = (
         "department",
         "report_date",
         "country",
+        "latest_report",
         "get_office_subtotal",
         "get_field_subtotal",
         "get_total",
