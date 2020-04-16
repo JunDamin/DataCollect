@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import render, redirect, reverse
 from django.core.paginator import Paginator
+from django.core.exceptions import ObjectDoesNotExist
 from users import mixins as user_mixins
 from data import models as data_models
 from . import models, forms
@@ -13,7 +14,6 @@ class PredictionCreateView(user_mixins.LoggedInOnlyView, FormView):
 
     form_class = forms.PredictionCreateForm
     template_name = "prediction/prediction_create.html"
-
 
     def get_form_kwargs(self):
         kwargs = super(PredictionCreateView, self).get_form_kwargs()
@@ -25,6 +25,12 @@ class PredictionCreateView(user_mixins.LoggedInOnlyView, FormView):
         prediction = form.save()
         prediction.author = self.request.user
         prediction.department = self.request.user.department
+        try:
+            print(self.request.user.department.latest_prediction)
+            self.request.user.department.latest_prediction.latest_prediction_id = None
+            self.request.user.department.latest_prediction.save()
+        except ObjectDoesNotExist:
+            pass
         prediction.latest_prediction = self.request.user.department
         prediction.save()
         return redirect(reverse("prediction:detail", kwargs={"pk": prediction.pk}))
