@@ -14,7 +14,7 @@ class Country(models.Model):
     korean = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.code.name
+        return self.korean
 
     def name(self):
         return self.korean

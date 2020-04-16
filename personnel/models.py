@@ -74,6 +74,13 @@ class PersonnelReport(core_models.TimeStampedModel):
 
     description = models.TextField(null=True, blank=True, verbose_name="참고사항")
 
+    latest_report = models.OneToOneField(
+        data_models.Department,
+        on_delete=models.PROTECT,
+        related_name="latest_report",
+        null=True,
+        blank=True,
+    )
     # 분류
     TOTAL_LIST = [
         "koica",

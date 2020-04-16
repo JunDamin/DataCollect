@@ -29,6 +29,7 @@ class PersonnelReportCreateView(user_mixins.LoggedInOnlyView, FormView):
         personnel = form.save()
         personnel.author = self.request.user
         personnel.department = self.request.user.department
+        personnel.latest_report = self.request.user.department
         personnel.save()
         return redirect(reverse("personnel:detail", kwargs={"pk": personnel.pk}))
 

@@ -14,6 +14,7 @@ class PredictionCreateView(user_mixins.LoggedInOnlyView, FormView):
     form_class = forms.PredictionCreateForm
     template_name = "prediction/prediction_create.html"
 
+
     def get_form_kwargs(self):
         kwargs = super(PredictionCreateView, self).get_form_kwargs()
         user = self.request.user
@@ -24,6 +25,7 @@ class PredictionCreateView(user_mixins.LoggedInOnlyView, FormView):
         prediction = form.save()
         prediction.author = self.request.user
         prediction.department = self.request.user.department
+        prediction.latest_prediction = self.request.user.department
         prediction.save()
         return redirect(reverse("prediction:detail", kwargs={"pk": prediction.pk}))
 

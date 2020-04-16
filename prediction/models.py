@@ -52,6 +52,14 @@ class Prediction(core_models.TimeStampedModel):
         blank=True,
     )
 
+    latest_report = models.OneToOneField(
+        data_models.Department,
+        on_delete=models.PROTECT,
+        related_name="latest_prediction",
+        null=True,
+        blank=True,
+    )
+
     def get_absolute_url(self):
         return reverse("prediction:detail", kwargs={"pk": self.pk})
 
