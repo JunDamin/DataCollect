@@ -33,7 +33,7 @@
                 <td class="border p-2  text-center w-1/3 font-medium">조치사항</td>
             </tr>
             {% for department in departments %}
-            {% if department.get_latest_prediction %}
+            {% if department.is_active %}
             <tr>
                 <td class="border p-2  text-center xl:truncate">{{department.name}}</td>
                 <td class="border p-2  text-center xl:truncate">
