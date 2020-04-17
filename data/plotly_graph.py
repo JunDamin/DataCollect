@@ -43,17 +43,13 @@ fig.show()
 """
 
 
-def plot_personnel():
-
-    df = pd.read_csv(
-        "https://raw.githubusercontent.com/plotly/datasets/master/2014_world_gdp_with_codes.csv"
-    )
+def plot_personnel(df):
 
     fig = go.Figure(
         data=go.Choropleth(
-            locations=df["CODE"],
-            z=df["GDP (BILLIONS)"],
-            text=df["COUNTRY"],
+            locations=df["location_code"],
+            z=df["total"],
+            text=df["country"],
             colorscale=c.sequential.Blues,
             autocolorscale=False,
             reversescale=False,

@@ -11,6 +11,7 @@ from django.core.paginator import Paginator
 from django.core.exceptions import ObjectDoesNotExist
 from django.template.loader import render_to_string
 from django.db import transaction
+from django_countries import countries
 from users import mixins as user_mixins
 from . import models, forms
 from data import models as data_models
@@ -101,32 +102,30 @@ class PersonnelReportListView(ListView):
     context_object_name = "departments"
     template_name = "personnel/personnel_list.html"
 
+    def get_data_frame(self):
+
+        # read query
+        df = pd.DataFrame(
+            list(
+                data_models.Department.objects.exclude(
+                    latest_report__id=None
+                ).values_list(
+                    "latest_report__country__code",
+                    "latest_report__country__korean",
+                    *[
+                        "latest_report__" + i
+                        for i in personnel_models.PersonnelReport.TOTAL_LIST
+                    ]
+                )
+            ),
+            columns=["code", "country"] + personnel_models.PersonnelReport.TOTAL_LIST,
+        )
+        # data processing
+        df["total"] = df.sum(axis=1)
+        df["location_code"] = df["code"].apply(countries.alpha3)
+        return df
+
     def get_context_data(self, **kwargs):
         context = super(PersonnelReportListView, self).get_context_data(**kwargs)
-        context["plot"] = plot.plot_personnel()
+        context["plot"] = plot.plot_personnel(self.get_data_frame())
         return context
-
-    print(
-        data_models.Department.objects.exclude(latest_report__id=None).values_list(
-            "latest_report__country__korean",
-            *[
-                "latest_report__" + i
-                for i in personnel_models.PersonnelReport.TOTAL_LIST
-            ]
-        )
-    )
-    df = pd.DataFrame(
-        list(
-            data_models.Department.objects.exclude(latest_report__id=None).values_list(
-                "latest_report__country__korean",
-                *[
-                    "latest_report__" + i
-                    for i in personnel_models.PersonnelReport.TOTAL_LIST
-                ]
-            )
-        ),
-        columns=["country"] + personnel_models.PersonnelReport.TOTAL_LIST,
-    )
-
-    df["total"] = df.sum(axis=1)
-    print(df)
