@@ -9,10 +9,12 @@ from django.forms import inlineformset_factory
 from django.shortcuts import render, redirect, reverse
 from django.core.paginator import Paginator
 from django.core.exceptions import ObjectDoesNotExist
+from django.template.loader import render_to_string
 from django.db import transaction
 from users import mixins as user_mixins
 from . import models, forms
 from data import models as data_models
+from data import plotly_graph as plot
 
 
 class PersonnelReportCreateView(user_mixins.LoggedInOnlyView, FormView):
@@ -96,3 +98,8 @@ class PersonnelReportListView(ListView):
     ordering = "pk"
     context_object_name = "departments"
     template_name = "personnel/personnel_list.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(PersonnelReportListView, self).get_context_data(**kwargs)
+        context["plot"] = plot.plot_personnel()
+        return context

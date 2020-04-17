@@ -5,7 +5,6 @@ verify_ssl = true
 
 [dev-packages]
 flake8 = "*"
-black = "*"
 
 [packages]
 django = "*"
@@ -14,6 +13,8 @@ requests = "*"
 pillow = "*"
 python-dotenv = "*"
 django-import-export = "*"
+plotly = "*"
+pandas = "*"
 
 [requires]
 python_version = "3.7"
