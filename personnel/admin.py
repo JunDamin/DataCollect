@@ -56,7 +56,7 @@ class PersonnelReportResource(resources.ModelResource):
                 "author__first_name",
                 "country",
                 "country__korean",
-                "latest_report",
+                "latest_prediction",
             ]
             + models.PersonnelReport.TOTAL_LIST
             + ["description"]
@@ -66,7 +66,7 @@ class PersonnelReportResource(resources.ModelResource):
                 "id",
                 "department",
                 "department__name",
-                "latest_report",
+                "latest_prediction",
                 "report_date",
                 "author",
                 "author__first_name",

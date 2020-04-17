@@ -1,3 +1,4 @@
+import pandas as pd
 from django.http import Http404
 from django.views.generic import ListView, DetailView, View, UpdateView, FormView
 from django.contrib.auth.decorators import login_required
@@ -5,9 +6,11 @@ from django.contrib import messages
 from django.shortcuts import render, redirect, reverse
 from django.core.paginator import Paginator
 from django.core.exceptions import ObjectDoesNotExist
+from django_countries import countries
 from users import mixins as user_mixins
 from data import models as data_models
 from . import models, forms
+from data import plotly_graph as plot
 
 
 class PredictionCreateView(user_mixins.LoggedInOnlyView, FormView):
@@ -124,3 +127,31 @@ class PredictionListView(ListView):
     ordering = "pk"
     context_object_name = "departments"
     template_name = "prediction/prediction_list.html"
+
+    def get_data_frame(self):
+
+        # read query
+        df = pd.DataFrame(
+            list(
+                data_models.Department.objects.exclude(
+                    latest_prediction__id=None
+                ).values_list(
+                    "latest_prediction__country__code",
+                    "latest_prediction__country__korean",
+                    "latest_prediction__risk_type__name",
+                    "latest_prediction__risk_level__name",
+                )
+            ),
+            columns=["code", "country", "risk_type", "risk_level"],
+        )
+        # data processing
+        df["location_situation"] = df["risk_type"] + " | " + df["country"]
+        df["location_code"] = df["code"].apply(countries.alpha3)
+        return df
+
+    def get_context_data(self, **kwargs):
+        context = super(PredictionListView, self).get_context_data(**kwargs)
+        df = self.get_data_frame()
+        context["plot"] = plot.plot_prediction(df)
+        context["df"] = df.to_html()
+        return context

@@ -2,6 +2,7 @@ import plotly.graph_objects as go
 import pandas as pd
 import plotly.colors as c
 from plotly.offline import plot
+import plotly.express as px
 
 """
 df = pd.read_csv(
@@ -74,7 +75,44 @@ def plot_personnel(df):
                 y=0.1,
                 xref="paper",
                 yref="paper",
-                text="Source:",
+                text="Source: 보고기준",
+                showarrow=False,
+            )
+        ],
+    )
+
+    return plot(fig, output_type="div")
+
+
+def plot_prediction(df):
+
+    fig = px.choropleth(
+        df,
+        color="risk_level",
+        locations="location_code",
+        color_discrete_sequence=[
+            "rgb(128, 0, 64)",
+            "rgb(255, 209, 26)",
+            "rgb(112, 219, 112)",
+        ],
+    )
+
+    fig.update_layout(
+        autosize=True,
+        width=1200,
+        height=800,
+        title_text="안전예보",
+        coloraxis_showscale=False,
+        geo=dict(
+            showframe=False, showcoastlines=False, projection_type="equirectangular"
+        ),
+        annotations=[
+            dict(
+                x=0.55,
+                y=0.1,
+                xref="paper",
+                yref="paper",
+                text="Source: 보고기준",
                 showarrow=False,
             )
         ],

@@ -1,3 +1,4 @@
+import pandas as pd
 from django.http import Http404
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
@@ -17,7 +18,6 @@ from . import models, forms
 from data import models as data_models
 from data import plotly_graph as plot
 from personnel import models as personnel_models
-import pandas as pd
 
 
 class PersonnelReportCreateView(user_mixins.LoggedInOnlyView, FormView):
@@ -127,5 +127,7 @@ class PersonnelReportListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(PersonnelReportListView, self).get_context_data(**kwargs)
-        context["plot"] = plot.plot_personnel(self.get_data_frame())
+        df = self.get_data_frame()
+        context["plot"] = plot.plot_personnel(df)
+        context["df"] = df.to_html()
         return context
