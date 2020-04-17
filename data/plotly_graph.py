@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.colors as c
 from plotly.offline import plot
 
-'''
+"""
 df = pd.read_csv(
     "https://raw.githubusercontent.com/plotly/datasets/master/2014_world_gdp_with_codes.csv"
 )
@@ -40,15 +40,15 @@ fig.update_layout(
 )
 
 fig.show()
-'''
+"""
 
 
 def plot_personnel():
-    
+
     df = pd.read_csv(
-    "https://raw.githubusercontent.com/plotly/datasets/master/2014_world_gdp_with_codes.csv"
+        "https://raw.githubusercontent.com/plotly/datasets/master/2014_world_gdp_with_codes.csv"
     )
-    
+
     fig = go.Figure(
         data=go.Choropleth(
             locations=df["CODE"],
@@ -65,6 +65,9 @@ def plot_personnel():
     )
 
     fig.update_layout(
+        autosize=True,
+        width=1200,
+        height=800,
         title_text="인원현황",
         geo=dict(
             showframe=False, showcoastlines=False, projection_type="equirectangular"

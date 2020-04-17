@@ -15,6 +15,8 @@ from users import mixins as user_mixins
 from . import models, forms
 from data import models as data_models
 from data import plotly_graph as plot
+from personnel import models as personnel_models
+import pandas as pd
 
 
 class PersonnelReportCreateView(user_mixins.LoggedInOnlyView, FormView):
@@ -103,3 +105,28 @@ class PersonnelReportListView(ListView):
         context = super(PersonnelReportListView, self).get_context_data(**kwargs)
         context["plot"] = plot.plot_personnel()
         return context
+
+    print(
+        data_models.Department.objects.exclude(latest_report__id=None).values_list(
+            "latest_report__country__korean",
+            *[
+                "latest_report__" + i
+                for i in personnel_models.PersonnelReport.TOTAL_LIST
+            ]
+        )
+    )
+    df = pd.DataFrame(
+        list(
+            data_models.Department.objects.exclude(latest_report__id=None).values_list(
+                "latest_report__country__korean",
+                *[
+                    "latest_report__" + i
+                    for i in personnel_models.PersonnelReport.TOTAL_LIST
+                ]
+            )
+        ),
+        columns=["country"] + personnel_models.PersonnelReport.TOTAL_LIST,
+    )
+
+    df["total"] = df.sum(axis=1)
+    print(df)
