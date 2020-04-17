@@ -88,12 +88,13 @@ def plot_prediction(df):
 
     fig = px.choropleth(
         df,
-        color="risk_level",
+        color="total_score",
         locations="location_code",
-        color_discrete_sequence=[
-            "rgb(128, 0, 64)",
-            "rgb(255, 209, 26)",
-            "rgb(112, 219, 112)",
+        hover_name="location_situation",
+        color_continuous_scale=[
+            [0, "rgb(112, 219, 112)",],
+            [0.5, "rgb(255, 209, 26)",],
+            [1, "rgb(128, 0, 64)",],
         ],
     )
 
@@ -102,7 +103,6 @@ def plot_prediction(df):
         width=1200,
         height=800,
         title_text="안전예보",
-        coloraxis_showscale=False,
         geo=dict(
             showframe=False, showcoastlines=False, projection_type="equirectangular"
         ),

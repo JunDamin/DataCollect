@@ -46,7 +46,16 @@ class PredictionDetailView(DetailView):
 class predictionEditView(UpdateView):
     model = models.Prediction
     template_name = "prediction/prediction_edit.html"
-    fields = ("country", "risk_type", "risk_level", "description", "action")
+    fields = (
+        "country",
+        "political_risk",
+        "safety_risk",
+        "disaster_risk",
+        "medical_risk",
+        "other_risk",
+        "description",
+        "action",
+    )
 
     def get_object(self, queryset=None):
         prediction = super().get_object(queryset=queryset)
@@ -79,8 +88,11 @@ class PredictionSearchView(View):
         if form.is_valid():
 
             country = form.cleaned_data.get("country")
-            risk_type = form.cleaned_data.get("risk_type")
-            risk_level = form.cleaned_data.get("risk_level")
+            political_risk = form.cleaned_data.get("political_risk")
+            safety_risk = form.cleaned_data.get("safety_risk")
+            disaster_risk = form.cleaned_data.get("disaster_risk")
+            medical_risk = form.cleaned_data.get("medical_risk")
+            other_risk = form.cleaned_data.get("other_risk")
             description = form.cleaned_data.get("description")
             action = form.cleaned_data.get("action")
 
@@ -95,11 +107,20 @@ class PredictionSearchView(View):
             if country:
                 filter_args["country"] = country
 
-            if risk_type:
-                filter_args["risk_type"] = risk_type
+            if political_risk:
+                filter_args["political_risk"] = political_risk
 
-            if risk_level:
-                filter_args["risk_level"] = risk_level
+            if safety_risk:
+                filter_args["safety_risk"] = safety_risk
+
+            if disaster_risk:
+                filter_args["disaster_risk"] = disaster_risk
+
+            if medical_risk:
+                filter_args["medical_risk"] = medical_risk
+
+            if other_risk:
+                filter_args["other_risk"] = other_risk
 
             qs = models.Prediction.objects.filter(**filter_args).order_by("-created")
 
@@ -138,14 +159,26 @@ class PredictionListView(ListView):
                 ).values_list(
                     "latest_prediction__country__code",
                     "latest_prediction__country__korean",
-                    "latest_prediction__risk_type__name",
-                    "latest_prediction__risk_level__name",
+                    "latest_prediction__political_risk__score",
+                    "latest_prediction__safety_risk__score",
+                    "latest_prediction__disaster_risk__score",
+                    "latest_prediction__medical_risk__score",
+                    "latest_prediction__other_risk__score",
                 )
             ),
-            columns=["code", "country", "risk_type", "risk_level"],
+            columns=[
+                "code",
+                "country",
+                "political_risk",
+                "safety_risk",
+                "disaster_risk",
+                "medical_risk",
+                "other_risk",
+            ],
         )
         # data processing
-        df["location_situation"] = df["risk_type"] + " | " + df["country"]
+        df["total_score"] = df.sum(axis=1)
+        df["location_situation"] = df["country"] + " | " + df["total_score"].apply(str)
         df["location_code"] = df["code"].apply(countries.alpha3)
         return df
 

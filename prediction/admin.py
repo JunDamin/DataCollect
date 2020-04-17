@@ -6,12 +6,12 @@ from . import models
 # Register your models here.
 
 
-@admin.register(models.RiskType, models.RiskLevel)
+@admin.register(models.RiskLevel)
 class ItemAdmin(ImportExportMixin, admin.ModelAdmin):
 
     """ Item Admin Definition """
 
-    list_display = ("name", "description")
+    list_display = ("name", "score", "description")
 
 
 class PredictionResource(resources.ModelResource):
@@ -21,14 +21,15 @@ class PredictionResource(resources.ModelResource):
             "id",
             "department",
             "department__name",
-            "latest_report",
+            "latest_prediction",
             "country",
             "country__korean",
             "report_date",
-            "risk_type",
-            "risk_type__name",
-            "risk_level",
-            "risk_level__name",
+            "political_risk",
+            "safety_risk",
+            "disaster_risk",
+            "medical_risk",
+            "other_risk",
             "description",
             "action",
             "author",
@@ -38,14 +39,15 @@ class PredictionResource(resources.ModelResource):
             "id",
             "department",
             "department__name",
-            "latest_report",
+            "latest_prediction",
             "country",
             "country__korean",
             "report_date",
-            "risk_type",
-            "risk_type__name",
-            "risk_level",
-            "risk_level__name",
+            "political_risk",
+            "safety_risk",
+            "disaster_risk",
+            "medical_risk",
+            "other_risk",
             "description",
             "action",
             "author",
@@ -63,15 +65,22 @@ class PredictionAdmin(ImportExportMixin, admin.ModelAdmin):
         "department",
         "country",
         "report_date",
-        "risk_type",
-        "risk_level",
+        "latest_prediction",
+        "political_risk",
+        "safety_risk",
+        "disaster_risk",
+        "medical_risk",
+        "other_risk",
         "description",
         "action",
     )
 
     list_filter = (
         "department",
-        "risk_type",
-        "risk_level",
+        "political_risk",
+        "safety_risk",
+        "disaster_risk",
+        "medical_risk",
+        "other_risk",
         "country",
     )

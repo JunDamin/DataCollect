@@ -11,8 +11,11 @@ class PredictionCreateForm(forms.ModelForm):
         fields = (
             "country",
             "report_date",
-            "risk_type",
-            "risk_level",
+            "political_risk",
+            "safety_risk",
+            "disaster_risk",
+            "medical_risk",
+            "other_risk",
             "description",
             "action",
         )
@@ -48,8 +51,11 @@ class SearchForm(forms.ModelForm):
         model = models.Prediction
         fields = (
             "country",
-            "risk_type",
-            "risk_level",
+            "political_risk",
+            "safety_risk",
+            "disaster_risk",
+            "medical_risk",
+            "other_risk",
             "description",
             "action",
         )

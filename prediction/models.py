@@ -15,6 +15,7 @@ class RiskType(models.Model):
 
 class RiskLevel(models.Model):
     name = models.CharField(max_length=255)
+    score = models.IntegerField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
 
     def __str__(self):
@@ -35,12 +36,47 @@ class Prediction(core_models.TimeStampedModel):
     )
     report_date = models.DateField()
 
-    risk_type = models.ForeignKey(
-        RiskType, related_name="prediction", on_delete=models.PROTECT
+    political_risk = models.ForeignKey(
+        RiskLevel,
+        verbose_name="정정불안",
+        related_name="prediction_political",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
     )
-    risk_level = models.ForeignKey(
-        RiskLevel, related_name="prediction", on_delete=models.PROTECT
+    safety_risk = models.ForeignKey(
+        RiskLevel,
+        verbose_name="치안",
+        related_name="prediction_safety",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
     )
+    disaster_risk = models.ForeignKey(
+        RiskLevel,
+        verbose_name="자연재해",
+        related_name="prediction_disaster",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+    )
+    medical_risk = models.ForeignKey(
+        RiskLevel,
+        verbose_name="질병",
+        related_name="prediction_medical",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+    )
+    other_risk = models.ForeignKey(
+        RiskLevel,
+        verbose_name="기타",
+        related_name="prediction_others",
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+    )
+
     description = models.TextField()
     action = models.TextField()
 
@@ -52,7 +88,7 @@ class Prediction(core_models.TimeStampedModel):
         blank=True,
     )
 
-    latest_report = models.OneToOneField(
+    latest_prediction = models.OneToOneField(
         data_models.Department,
         on_delete=models.PROTECT,
         related_name="latest_prediction",
