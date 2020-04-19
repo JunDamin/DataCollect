@@ -171,3 +171,21 @@ Q.
  - 어떻게 해야지 view에서 employment 유무를 확인해서 다른 곳으로 보낼 수 있을까? try-catch를 사용
  - 검색기능을 구현하자.
  - 부서페이지를 구현하자.
+
+
+
+
+python anywhere 
+
+import os
+import sys
+
+path = '/home/kakaodamin/kakaodamin.pythonanywhere.com'
+
+if path not in sys.path:
+    sys.path.append(path)
+
+os.environ["DJANGO_SETTINGS_MODULE"] = "config.settings"
+
+from django.core.wsgi import get_wsgi_application
+application = get_wsgi_application()
