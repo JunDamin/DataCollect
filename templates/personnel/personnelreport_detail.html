@@ -11,50 +11,56 @@
         <div class="flex w-full justify-between border-section">
             <div class="pb-1 content-around">
                 <div class="flex justify-between box-border">
-                    <h4 class="text-3xl font-medium h-full">{{personnel.department}} 파견현황</h4>
+                    <h4 class="text-3xl font-medium h-full">{{personnelreport.department}} 파견현황</h4>
                 </div>
                 <div class="justify-between w-full overflow-hidden ">
-                    <span class="text-gray-700 font-bold">{{personnel.country.name}}</span>
+                    <span class="text-gray-700 font-bold">{{personnelreport.country.name}}</span>
                 </div>
                 <div>
-                    <span class="text-sm text-gray-500 font-bold">{{personnel.report_date}}</span>
+                    <span class="text-sm text-gray-500 font-bold">{{personnelreport.report_date}}</span>
                 </div>
             </div>
             <div>
                 <a href="{{prediction.author.get_absolute_url}}" class="flex flex-col items-center">
-                    {% include "mixins/user_avatar.html" with user=prediction.author %}
-                    <span class="mt-2 text-gray-500">{{prediction.author.first_name}}</span>
+                    {% include "mixins/user_avatar.html" with user=personnelreport.author %}
+                    <span class="mt-2 text-gray-500">{{personnelreport.author.first_name}}</span>
                 </a>
             </div>
         </div>
-        <div class="border-section flex mx-auto justify-between w-1/4">
-            <div>
-                {% for info in personnel.info.all %}
-                <div>
-                    <span>{{info.personnel}}</span>
-                </div>
-                {% endfor %}
-            </div>
-            <div>
-                {% for info in personnel.info.all %}
-                <div>
-                    <span>{{info.number}}명</span>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-        <div class="border-section flex mx-auto justify-between w-1/4">
-            <div>합계</div>
-            <div>{{personnel.sum}}명</div>
-        </div>
-        {% if user == personnel.author %}
-        <div class="flex flex-col w-full">
-            <a href="{% url 'personnel:edit' personnel.pk %}" class="btn-link bg-teal-500 mb-3">Edit personnel</a>
-            <a href="{% url 'personnel:delete' personnel.pk %}" class="btn-link">Delete personnel</a>
-        </div>
-        {% endif %}
+        <div>
+            <div class="border-section mx-auto w-1/2">
 
+                {%for name, value in personnelreport.get_office_value %}
+                <div class="flex justify-between">
+                    <div>{{name}}</div>
+                    <div>{{value|default_if_none:" - "}}명</div>
+                </div>
+                {% endfor %}
+
+            </div>
+            <div class="border-section mx-auto w-1/2">
+
+                {%for name, value in personnelreport.get_field_value %}
+                <div class="flex justify-between">
+                    <div>{{name}}</div>
+                    <div>{{value|default_if_none:" - "}}명</div>
+                </div>
+                {% endfor %}
+
+            </div>
+            <div class="border-section flex mx-auto justify-between w-1/4">
+                <div>합계</div>
+                <div>{{personnelreport.get_total}} 명</div>
+            </div>
+            {% if user == personnel.author %}
+            <div class="flex flex-col w-full">
+                <a href="{% url 'personnel:edit' personnel.pk %}" class="btn-link bg-teal-500 mb-3">Edit
+                    personnel</a>
+                <a href="{% url 'personnel:delete' personnel.pk %}" class="btn-link">Delete personnel</a>
+            </div>
+            {% endif %}
+
+        </div>
     </div>
 </div>
-
 {% endblock content %}

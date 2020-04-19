@@ -52,20 +52,20 @@
                     {{department.latest_report.report_date|date:"m-d"}}
                 </td>
                 {% for verbose_name, value in department.latest_report.get_office_value %}
-                <td class="border p-2  text-center">{% if value %}{{value}}{%else%} - {% endif %}</td>
+                <td class="border p-2  text-center">{{value|default_if_none:" - "}}</td>
                 {% endfor %}
                 </td>
                 <td class="border p-2  text-center font-bold">
                     {{department.latest_report.get_office_subtotal}}</td>
                 {% for verbose_name, value in department.latest_report.get_field_value %}
-                <td class="border p-2  text-center">{% if value %}{{value}}{%else%} - {% endif %}</td>
+                <td class="border p-2  text-center">{{value|default_if_none:" - "}}</td>
                 {% endfor %}
                 <td class="border p-2  text-center font-bold">
                     {{department.latest_report.get_field_subtotal}}</td>
                 <td class="border p-2  text-center font-bold">{{department.latest_report.get_total}}</td>
                 <td class="border p-2  text-center">
-                    {% with department.latest_report.description as value%}{% if value %}{{value}}{%else%}
-                    - {% endif %}{% endwith %}</td>
+                    {% with department.latest_report.description as value%}{{value|default_if_none:" - "}}{% endwith %}
+                </td>
             </tr>
             {% endif %}
 
