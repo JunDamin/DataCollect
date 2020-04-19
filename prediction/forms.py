@@ -51,13 +51,12 @@ class SearchForm(forms.ModelForm):
         model = models.Prediction
         fields = (
             "country",
+            "report_date",
             "political_risk",
             "safety_risk",
             "disaster_risk",
             "medical_risk",
             "other_risk",
-            "description",
-            "action",
         )
 
     def __init__(self, *args, **kwargs):

@@ -167,5 +167,7 @@
 #4.5.2 Create Personnel Report List View 
 
 Q.
- - 어떻게 해야 ordering이 된 가장 최신 값만 표기할 수 있을까?
- - 어떻게 해야지 view에서 employment 유무를 확인해서 다른 곳으로 보낼 수 있을까?
+ - 어떻게 해야 ordering이 된 가장 최신 값만 표기할 수 있을까? 신규 등록할 때 최신자료로 일대일 맵핑
+ - 어떻게 해야지 view에서 employment 유무를 확인해서 다른 곳으로 보낼 수 있을까? try-catch를 사용
+ - 검색기능을 구현하자.
+ - 부서페이지를 구현하자.

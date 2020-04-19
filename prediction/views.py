@@ -88,24 +88,20 @@ class PredictionSearchView(View):
         if form.is_valid():
 
             country = form.cleaned_data.get("country")
+            report_date = form.cleaned_data.get("report_date")
             political_risk = form.cleaned_data.get("political_risk")
             safety_risk = form.cleaned_data.get("safety_risk")
             disaster_risk = form.cleaned_data.get("disaster_risk")
             medical_risk = form.cleaned_data.get("medical_risk")
             other_risk = form.cleaned_data.get("other_risk")
-            description = form.cleaned_data.get("description")
-            action = form.cleaned_data.get("action")
 
             filter_args = {}
 
-            if description:
-                filter_args["description__contains"] = description
-
-            if action:
-                filter_args["action__contains"] = action
-
             if country:
                 filter_args["country"] = country
+
+            if report_date:
+                filter_args["report_date"] = report_date
 
             if political_risk:
                 filter_args["political_risk"] = political_risk
@@ -143,11 +139,11 @@ class PredictionSearchView(View):
             return render(request, "prediction/search.html", {"form": form})
 
 
-class PredictionListView(ListView):
+class PredictionSummaryView(ListView):
     model = data_models.Department
     ordering = "pk"
     context_object_name = "departments"
-    template_name = "prediction/prediction_list.html"
+    template_name = "prediction/prediction_summary.html"
 
     def get_data_frame(self):
 
@@ -159,6 +155,7 @@ class PredictionListView(ListView):
                 ).values_list(
                     "latest_prediction__country__code",
                     "latest_prediction__country__korean",
+                    "latest_prediction__report_date",
                     "latest_prediction__political_risk__score",
                     "latest_prediction__safety_risk__score",
                     "latest_prediction__disaster_risk__score",
@@ -169,6 +166,7 @@ class PredictionListView(ListView):
             columns=[
                 "code",
                 "country",
+                "report_date",
                 "political_risk",
                 "safety_risk",
                 "disaster_risk",
@@ -178,12 +176,18 @@ class PredictionListView(ListView):
         )
         # data processing
         df["total_score"] = df.sum(axis=1)
-        df["location_situation"] = df["country"] + " | " + df["total_score"].apply(str)
+        df["location_situation"] = (
+            df["country"]
+            + " | "
+            + df["report_date"].apply(str)
+            + " | "
+            + df["total_score"].apply(str)
+        )
         df["location_code"] = df["code"].apply(countries.alpha3)
         return df
 
     def get_context_data(self, **kwargs):
-        context = super(PredictionListView, self).get_context_data(**kwargs)
+        context = super(PredictionSummaryView, self).get_context_data(**kwargs)
         df = self.get_data_frame()
         context["plot"] = plot.plot_prediction(df)
         context["df"] = df.to_html()

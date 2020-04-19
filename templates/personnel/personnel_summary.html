@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+
+{% block page_title %}
+안전예보
+{% endblock page_title %}
+
+{% block content %}
+
+<div class="container mx-auto pb-10">
+    <div class="justify-between flex mb-3">
+        <div class='w-1/2 flex'>
+            <a href="{% url 'personnel:create' %}" class="btn bg-red-500 my-0 mx-3 text-white">신규작성</a>
+        </div>
+        <div class='w-full align-middle'>
+
+        </div>
+    </div>
+    <div class="rounded-xl border overflow-hidden mb-3">{{plot|safe}}</div>
+    <div class="flex flex-wrap justify-center mb-10">
+        <table class="table-fixed">
+            <tr>
+                <td class="border p-2  text-center xl:truncate font-medium">사무소명</td>
+                <td class="border p-2  text-sm text-center xl:truncate font-medium">보고기준일</td>
+                <td class="border p-2  text-xs text-center font-medium">KOICA 직원</td>
+                <td class="border p-2  text-xs text-center font-medium">일반 행정원</td>
+                <td class="border p-2  text-xs text-center font-medium">봉사단 코디네이터</td>
+                <td class="border p-2  text-xs text-center font-medium">개발협력 코디네이터</td>
+                <td class="border p-2  text-xs text-center font-medium">YP</td>
+                <td class="border p-2  text-xs text-center font-medium">사무소 파트 현지고용원</td>
+                <td class="border p-2  text-xs text-center font-medium">봉사단 파트 현지고용원</td>
+                <td class="border p-2  text-sm text-center font-bold">사무소 근무인원 소계</td>
+                <td class="border p-2  text-xs text-center font-medium">KOICA 봉사단</td>
+                <td class="border p-2  text-xs text-center font-medium">중장기 자문단</td>
+                <td class="border p-2  text-xs text-center font-medium">다자협력전문가</td>
+                <td class="border p-2  text-xs text-center font-medium">글로벌 협력의사</td>
+                <td class="border p-2  text-xs text-center font-medium">타 WFK봉사단(NIPA 등)</td>
+                <td class="border p-2  text-xs text-center font-medium">사무소 고용 프로젝트 인원</td>
+                <td class="border p-2  text-xs text-center font-medium">외부소속 프로젝트 인원</td>
+                <td class="border p-2  text-sm text-center font-bold">현장 근무인원 소계</td>
+                <td class="border p-2  text-center xl:truncate font-bold">합계</td>
+                <td class="border p-2  text-sm text-center  xl:truncate font-medium">참고사항</td>
+            </tr>
+            {% for department in departments %}
+            {% if department.is_active %}
+
+            <tr>
+                <td class="border p-2  text-center xl:truncate"><a
+                        href="{% url 'personnel:detail' department.latest_report.pk %}"
+                        class="text-teal-500 font-bold">{{department.name}}</a></td>
+                <td class="border p-2  text-center xl:truncate">
+                    {{department.latest_report.report_date|date:"m-d"}}
+                </td>
+                {% for verbose_name, value in department.latest_report.get_office_value %}
+                <td class="border p-2  text-center">{% if value %}{{value}}{%else%} - {% endif %}</td>
+                {% endfor %}
+                </td>
+                <td class="border p-2  text-center font-bold">
+                    {{department.latest_report.get_office_subtotal}}</td>
+                {% for verbose_name, value in department.latest_report.get_field_value %}
+                <td class="border p-2  text-center">{% if value %}{{value}}{%else%} - {% endif %}</td>
+                {% endfor %}
+                <td class="border p-2  text-center font-bold">
+                    {{department.latest_report.get_field_subtotal}}</td>
+                <td class="border p-2  text-center font-bold">{{department.latest_report.get_total}}</td>
+                <td class="border p-2  text-center">
+                    {% with department.latest_report.description as value%}{% if value %}{{value}}{%else%}
+                    - {% endif %}{% endwith %}</td>
+            </tr>
+            {% endif %}
+
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+{% endblock content %}

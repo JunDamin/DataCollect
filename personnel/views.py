@@ -97,10 +97,20 @@ def delete_personnel_report(request, pk):
 
 
 class PersonnelReportListView(ListView):
+    model = models.PersonnelReport
+    ordering = "pk"
+    context_object_name = "personnel_report"
+    template_name = "personnel/personnel_list.html"
+    paginate_by = 24
+    paginate_orphans = 5
+    ordering = ['-created']
+
+
+class PersonnelReportSummaryView(ListView):
     model = data_models.Department
     ordering = "pk"
     context_object_name = "departments"
-    template_name = "personnel/personnel_list.html"
+    template_name = "personnel/personnel_summary.html"
 
     def get_data_frame(self):
 
@@ -126,7 +136,7 @@ class PersonnelReportListView(ListView):
         return df
 
     def get_context_data(self, **kwargs):
-        context = super(PersonnelReportListView, self).get_context_data(**kwargs)
+        context = super(PersonnelReportSummaryView, self).get_context_data(**kwargs)
         df = self.get_data_frame()
         context["plot"] = plot.plot_personnel(df)
         context["df"] = df.to_html()
