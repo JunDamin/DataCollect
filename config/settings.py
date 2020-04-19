@@ -25,7 +25,7 @@ SECRET_KEY = "u@46@s#^mj3z&*hlkdg%-s^x62kw5=!5t1@k%^$*iac17y9jvp"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["http://kakaodamin.pythonanywhere.com/", "https://127.0.0.1"]
+ALLOWED_HOSTS = ["kakaodamin.pythonanywhere.com/", "127.0.0.1"]
 
 
 # Application definition
