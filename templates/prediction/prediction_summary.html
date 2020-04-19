@@ -12,13 +12,6 @@
         <div class='w-1/2 flex'>
             <a href="{% url 'prediction:create' %}" class="btn bg-red-500 my-0 mx-3 text-white">신규작성</a>
         </div>
-        <div class='w-full align-middle'>
-            <form method="get" action="{% url "prediction:search" %}" class="w-9/12 inline-block align-middle">
-                <input
-                    class="search-box border inline-block align-middle px-5 w-full font-medium text-gray-900 placeholder-gray-600 py-3 rounded-sm w-64 shadow-md hover:shadow-lg focus:outline-none"
-                    name="description" placeholder="내용으로 찾기" />
-            </form>
-        </div>
     </div>
 
     <div class="rounded-xl border overflow-hidden mb-3">{{plot|safe}}</div>
