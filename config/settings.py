@@ -128,6 +128,6 @@ STATIC_URL = "/static/"
 
 # STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
-STATIC_ROOT = "/home/jundamin/jundamin.pythonanywhere.com/static"
+STATIC_ROOT = "/home/kakaodamin/kakaodamin.pythonanywhere.com/static"
 
 AUTH_USER_MODEL = "users.User"
