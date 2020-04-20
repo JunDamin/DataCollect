@@ -14,6 +14,7 @@
         </div>
         <div class='w-1/2 flex'>
             <a href="{% url 'personnel:update-graph' %}" class="btn my-0 mx-3 text-teal-500 font-bold">그래프 갱신</a>
+            <a href="{% url 'personnel:list' %}" class="btn my-0 mx-3 text-teal-500 font-bold">목록보기</a>
         </div>
     </div>
     <div class="rounded-xl border overflow-hidden mb-3">{% include 'mixins/personnel_graph.html' %}</div>

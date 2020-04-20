@@ -96,21 +96,36 @@ class Prediction(core_models.TimeStampedModel):
         blank=True,
     )
 
+    TOTAL_LIST = [
+        "political_risk",
+        "safety_risk",
+        "disaster_risk",
+        "medical_risk",
+        "other_risk",
+    ]
+
     def get_absolute_url(self):
         return reverse("prediction:detail", kwargs={"pk": self.pk})
 
     def get_fields(self):
         return [
-            (field, field.value_to_string(self))
+            (field, RiskLevel.objects.get(pk=field.value_from_object(self)))
             for field in Prediction._meta.fields
-            if field.name
-            in [
-                "country",
-                "report_date",
-                "risk_type",
-                "risk_level",
-                "description",
-                "action",
-                "author",
-            ]
+            if field.name in Prediction.TOTAL_LIST
         ]
+
+    def get_total_score(self):
+        return get_field_sum(Prediction.TOTAL_LIST, self,)
+
+
+def get_field_sum(x: list, self):
+    return sum(
+        filter(
+            lambda x: x != None,
+            [
+                RiskLevel.objects.get(pk=field.value_from_object(self)).score
+                for field in Prediction._meta.fields
+                if field.name in x
+            ],
+        )
+    )

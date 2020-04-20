@@ -1,7 +1,7 @@
 <ul class="flex items-center text-sm font-medium h-full">
 
     {% if user.is_authenticated %}
-    <li class="nav_link"><a href="{% url "prediction:summary" %}">안전예보</a></li>
+    <li class="nav_link"><a href="{% url "prediction:summary" %}">안전전망</a></li>
     <li class="nav_link"><a href="{% url "personnel:summary" %}">인원보고</a></li>
     <li class="nav_link"><a href="{% url "events:list" %}">주요일정</a></li>
     <li class="nav_link"><a href="#" class="text-gray-700 font-medium">My Department</a></li>

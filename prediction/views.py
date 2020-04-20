@@ -139,6 +139,15 @@ class PredictionSearchView(user_mixins.LoggedInOnlyView, View):
             return render(request, "prediction/search.html", {"form": form})
 
 
+class PredictionListView(user_mixins.LoggedInOnlyView, ListView):
+    model = models.Prediction
+    context_object_name = "prediction"
+    template_name = "personnel/prediction_list.html"
+    paginate_by = 24
+    paginate_orphans = 5
+    ordering = ["-created"]
+
+
 class PredictionSummaryView(user_mixins.LoggedInOnlyView, ListView):
     model = data_models.Department
     ordering = "pk"

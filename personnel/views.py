@@ -98,7 +98,6 @@ def delete_personnel_report(request, pk):
 
 class PersonnelReportListView(user_mixins.LoggedInOnlyView, ListView):
     model = models.PersonnelReport
-    ordering = "pk"
     context_object_name = "personnel_report"
     template_name = "personnel/personnel_list.html"
     paginate_by = 24

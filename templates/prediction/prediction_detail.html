@@ -15,11 +15,19 @@
                 </div>
                 <div class="justify-between w-full overflow-hidden ">
                     <span class="text-gray-700 font-bold">{{prediction.country.name}}</span>
-                    <span class="text-teal-800 font-bold px-5">{{prediction.risk_type}}</span>
-                    <span class="mr-5 text-gray-700 font-bold">{{prediction.risk_level}}</span>
+                    <span class="text-teal-800 font-bold px-5">위험도 {{prediction.get_total_score}}</span>
                 </div>
                 <div>
                     <span class="text-sm text-gray-500 font-bold">{{prediction.report_date}}</span>
+                </div>
+                <div class="flex">
+                    {% for field, value in prediction.get_fields %}
+                    <div>
+                        <span class="mr-5 text-gray-700 font-bold">{{field.verbose_name}}</span>
+                        <span
+                            class="mr-5 {% if value.pk == 1 %} text-red-600 {% elif value.pk == 2 %} text-orange-300 {%else%} text-green-300{% endif %} font-bold">{{value}}</span>
+                    </div>
+                    {% endfor %}
                 </div>
             </div>
             <div>
@@ -30,12 +38,12 @@
             </div>
         </div>
         <div class="border-section">
-            <p class="w-full p-5">
+            <p class="w-full p-3">
                 {{prediction.description|linebreaks}}
             </p>
         </div>
         <div class="border-section">
-            <p class="w-full p-5">
+            <p class="w-full p-3">
                 {{prediction.action|linebreaks}}
             </p>
         </div>
