@@ -11,4 +11,5 @@ urlpatterns = [
     path("<int:pk>/edit/", views.PersonnelReportEditView.as_view(), name="edit"),
     path("<int:pk>/delete/", views.delete_personnel_report, name="delete",),
     path("summary/", views.PersonnelReportSummaryView.as_view(), name="summary",),
+    path("graph/", views.update_graph, name="update-graph",),
 ]

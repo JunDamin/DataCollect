@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+
+{% block page_title %}
+Home
+{% endblock page_title %}
+
+{% block content %}
+
+<div class="container mx-auto pb-10">
+    <div class="justify-between flex mb-3">
+        <div class='w-1/2 flex'>
+            <a href="{% url 'prediction:create' %}" class="btn bg-red-500 my-0 mx-3 text-white">신규 안전전망 작성</a>
+        </div>
+        <div class='w-1/2 flex'>
+            <a href="{% url 'personnel:create' %}" class="btn bg-teal-500 my-0 mx-3 text-white">신규 인원보고 작성</a>
+        </div>
+    </div>
+    <div class="rounded-xl border overflow-hidden mb-3">{% include 'mixins/prediction_graph.html' %}</div>
+    <div class="rounded-xl border overflow-hidden mb-3">{% include 'mixins/personnel_graph.html' %}</div>
+</div>
+{% endblock %}

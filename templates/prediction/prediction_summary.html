@@ -12,9 +12,12 @@
         <div class='w-1/2 flex'>
             <a href="{% url 'prediction:create' %}" class="btn bg-red-500 my-0 mx-3 text-white">신규작성</a>
         </div>
+        <div class='w-1/2 flex'>
+            <a href="{% url 'prediction:update-graph' %}" class="btn my-0 mx-3 text-red-500 font-bold">그래프 갱신</a>
+        </div>
     </div>
 
-    <div class="rounded-xl border overflow-hidden mb-3">{{plot|safe}}</div>
+    <div class="rounded-xl border overflow-hidden mb-3">{% include 'mixins/prediction_graph.html' %}</div>
 
     <div>
         <table class="table-fixed block mx-auto">

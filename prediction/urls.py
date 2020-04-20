@@ -10,4 +10,5 @@ urlpatterns = [
     path("<int:pk>/edit/", views.predictionEditView.as_view(), name="edit"),
     path("<int:pk>/delete/", views.delete_prediction, name="delete",),
     path("search", views.PredictionSearchView.as_view(), name="search",),
+    path("graph", views.update_graph, name="update-graph",),
 ]

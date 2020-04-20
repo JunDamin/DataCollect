@@ -1,8 +1,8 @@
 from django.urls import path
-from prediction import views as prediction_views
+from . import views
 
 app_name = "core"
 
 urlpatterns = [
-    path("", prediction_views.PredictionSummaryView.as_view(), name="home"),
+    path("", views.go_to_home, name="home"),
 ]

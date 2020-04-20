@@ -16,7 +16,7 @@ from django_countries import countries
 from users import mixins as user_mixins
 from . import models, forms
 from data import models as data_models
-from data import plotly_graph as plot
+from plotly_graph import plot_personnel
 from personnel import models as personnel_models
 
 
@@ -46,11 +46,11 @@ class PersonnelReportCreateView(user_mixins.LoggedInOnlyView, FormView):
         return redirect(reverse("personnel:detail", kwargs={"pk": personnel.pk}))
 
 
-class PersonnelReportDetailView(DetailView):
+class PersonnelReportDetailView(user_mixins.LoggedInOnlyView, DetailView):
     model = models.PersonnelReport
 
 
-class PersonnelReportEditView(UpdateView):
+class PersonnelReportEditView(user_mixins.LoggedInOnlyView, UpdateView):
     model = models.PersonnelReport
     template_name = "personnel/personnel_edit.html"
     fields = (
@@ -96,48 +96,46 @@ def delete_personnel_report(request, pk):
         return redirect((reverse("core:home")))
 
 
-class PersonnelReportListView(ListView):
+class PersonnelReportListView(user_mixins.LoggedInOnlyView, ListView):
     model = models.PersonnelReport
     ordering = "pk"
     context_object_name = "personnel_report"
     template_name = "personnel/personnel_list.html"
     paginate_by = 24
     paginate_orphans = 5
-    ordering = ['-created']
+    ordering = ["-created"]
 
 
-class PersonnelReportSummaryView(ListView):
+class PersonnelReportSummaryView(user_mixins.LoggedInOnlyView, ListView):
     model = data_models.Department
     ordering = "pk"
     context_object_name = "departments"
     template_name = "personnel/personnel_summary.html"
 
-    def get_data_frame(self):
 
-        # read query
-        df = pd.DataFrame(
-            list(
-                data_models.Department.objects.exclude(
-                    latest_report__id=None
-                ).values_list(
-                    "latest_report__country__code",
-                    "latest_report__country__korean",
-                    *[
-                        "latest_report__" + i
-                        for i in personnel_models.PersonnelReport.TOTAL_LIST
-                    ]
-                )
-            ),
-            columns=["code", "country"] + personnel_models.PersonnelReport.TOTAL_LIST,
-        )
-        # data processing
-        df["total"] = df.sum(axis=1)
-        df["location_code"] = df["code"].apply(countries.alpha3)
-        return df
+def update_graph(request):
+    df = get_data_frame()
+    plot_personnel(df)
+    return redirect((reverse("personnel:summary")))
 
-    def get_context_data(self, **kwargs):
-        context = super(PersonnelReportSummaryView, self).get_context_data(**kwargs)
-        df = self.get_data_frame()
-        context["plot"] = plot.plot_personnel(df)
-        context["df"] = df.to_html()
-        return context
+
+def get_data_frame():
+
+    # read query
+    df = pd.DataFrame(
+        list(
+            data_models.Department.objects.exclude(latest_report__id=None).values_list(
+                "latest_report__country__code",
+                "latest_report__country__korean",
+                *[
+                    "latest_report__" + i
+                    for i in personnel_models.PersonnelReport.TOTAL_LIST
+                ]
+            )
+        ),
+        columns=["code", "country"] + personnel_models.PersonnelReport.TOTAL_LIST,
+    )
+    # data processing
+    df["total"] = df.sum(axis=1)
+    df["location_code"] = df["code"].apply(countries.alpha3)
+    return df

@@ -10,7 +10,7 @@ from django_countries import countries
 from users import mixins as user_mixins
 from data import models as data_models
 from . import models, forms
-from data import plotly_graph as plot
+from plotly_graph import plot_prediction
 
 
 class PredictionCreateView(user_mixins.LoggedInOnlyView, FormView):
@@ -39,11 +39,11 @@ class PredictionCreateView(user_mixins.LoggedInOnlyView, FormView):
         return redirect(reverse("prediction:detail", kwargs={"pk": prediction.pk}))
 
 
-class PredictionDetailView(DetailView):
+class PredictionDetailView(user_mixins.LoggedInOnlyView, DetailView):
     model = models.Prediction
 
 
-class predictionEditView(UpdateView):
+class predictionEditView(user_mixins.LoggedInOnlyView, UpdateView):
     model = models.Prediction
     template_name = "prediction/prediction_edit.html"
     fields = (
@@ -80,7 +80,7 @@ def delete_prediction(request, pk):
         return redirect((reverse("core:home")))
 
 
-class PredictionSearchView(View):
+class PredictionSearchView(user_mixins.LoggedInOnlyView, View):
     def get(self, request):
 
         form = forms.SearchForm(request.GET)
@@ -139,56 +139,60 @@ class PredictionSearchView(View):
             return render(request, "prediction/search.html", {"form": form})
 
 
-class PredictionSummaryView(ListView):
+class PredictionSummaryView(user_mixins.LoggedInOnlyView, ListView):
     model = data_models.Department
     ordering = "pk"
     context_object_name = "departments"
     template_name = "prediction/prediction_summary.html"
 
-    def get_data_frame(self):
-
-        # read query
-        df = pd.DataFrame(
-            list(
-                data_models.Department.objects.exclude(
-                    latest_prediction__id=None
-                ).values_list(
-                    "latest_prediction__country__code",
-                    "latest_prediction__country__korean",
-                    "latest_prediction__report_date",
-                    "latest_prediction__political_risk__score",
-                    "latest_prediction__safety_risk__score",
-                    "latest_prediction__disaster_risk__score",
-                    "latest_prediction__medical_risk__score",
-                    "latest_prediction__other_risk__score",
-                )
-            ),
-            columns=[
-                "code",
-                "country",
-                "report_date",
-                "political_risk",
-                "safety_risk",
-                "disaster_risk",
-                "medical_risk",
-                "other_risk",
-            ],
-        )
-        # data processing
-        df["total_score"] = df.sum(axis=1)
-        df["location_situation"] = (
-            df["country"]
-            + " | "
-            + df["report_date"].apply(str)
-            + " | "
-            + df["total_score"].apply(str)
-        )
-        df["location_code"] = df["code"].apply(countries.alpha3)
-        return df
-
     def get_context_data(self, **kwargs):
         context = super(PredictionSummaryView, self).get_context_data(**kwargs)
-        df = self.get_data_frame()
-        context["plot"] = plot.plot_prediction(df)
-        context["df"] = df.to_html()
         return context
+
+
+def update_graph(request):
+    df = get_data_frame()
+    plot_prediction(df)
+    return redirect((reverse("prediction:summary")))
+
+
+def get_data_frame():
+
+    # read query
+    df = pd.DataFrame(
+        list(
+            data_models.Department.objects.exclude(
+                latest_prediction__id=None
+            ).values_list(
+                "latest_prediction__country__code",
+                "latest_prediction__country__korean",
+                "latest_prediction__report_date",
+                "latest_prediction__political_risk__score",
+                "latest_prediction__safety_risk__score",
+                "latest_prediction__disaster_risk__score",
+                "latest_prediction__medical_risk__score",
+                "latest_prediction__other_risk__score",
+            )
+        ),
+        columns=[
+            "code",
+            "country",
+            "report_date",
+            "political_risk",
+            "safety_risk",
+            "disaster_risk",
+            "medical_risk",
+            "other_risk",
+        ],
+    )
+    # data processing
+    df["total_score"] = df.sum(axis=1)
+    df["location_situation"] = (
+        df["country"]
+        + " | "
+        + df["report_date"].apply(str)
+        + " | "
+        + df["total_score"].apply(str)
+    )
+    df["location_code"] = df["code"].apply(countries.alpha3)
+    return df

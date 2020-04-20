@@ -1,3 +1,4 @@
+from datetime import datetime
 import plotly.graph_objects as go
 import pandas as pd
 import plotly.colors as c
@@ -75,13 +76,17 @@ def plot_personnel(df):
                 y=0.1,
                 xref="paper",
                 yref="paper",
-                text="Source: 보고기준",
+                text="Source: 취합기준 " + str(datetime.now())[:-7],
                 showarrow=False,
             )
         ],
     )
 
-    return plot(fig, output_type="div")
+    with open("templates/mixins/personnel_graph.html", "w") as p:
+        p.write(plot(fig, output_type="div"))
+        print("generate")
+
+    return "generated"
 
 
 def plot_prediction(df):
@@ -112,10 +117,14 @@ def plot_prediction(df):
                 y=0.1,
                 xref="paper",
                 yref="paper",
-                text="Source: 보고기준",
+                text="Source: 취합기준 " + str(datetime.now())[:-7],
                 showarrow=False,
             )
         ],
     )
 
-    return plot(fig, output_type="div")
+    with open("templates/mixins/prediction_graph.html", "w") as p:
+        p.write(plot(fig, output_type="div"))
+        print("generate")
+
+    return "generated"
