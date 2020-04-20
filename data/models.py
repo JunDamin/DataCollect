@@ -46,6 +46,12 @@ class Department(core_models.TimeStampedModel):
         else:
             return None
 
+    def get_prediction(self):
+        return self.prediction.filter().order_by("-created")
+
+    def get_personnel_report(self):
+        return self.personnel_report.filter().order_by("-created")
+
 
 class DepartmentDetail(core_models.TimeStampedModel):
 

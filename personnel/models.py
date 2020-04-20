@@ -34,7 +34,7 @@ class PersonnelReport(core_models.TimeStampedModel):
 
     department = models.ForeignKey(
         data_models.Department,
-        related_name="personnel",
+        related_name="personnel_report",
         on_delete=models.PROTECT,
         null=True,
         blank=True,
@@ -46,7 +46,7 @@ class PersonnelReport(core_models.TimeStampedModel):
 
     author = models.ForeignKey(
         user_models.User,
-        related_name="personnel",
+        related_name="personnel_report",
         on_delete=models.PROTECT,
         null=True,
         blank=True,

@@ -52,11 +52,11 @@
                 <div>합계</div>
                 <div>{{personnelreport.get_total}} 명</div>
             </div>
-            {% if user == personnel.author %}
+            {% if user == personnelreport.author %}
             <div class="flex flex-col w-full">
-                <a href="{% url 'personnel:edit' personnel.pk %}" class="btn-link bg-teal-500 mb-3">Edit
-                    personnel</a>
-                <a href="{% url 'personnel:delete' personnel.pk %}" class="btn-link">Delete personnel</a>
+                <a href="{% url 'personnel:edit' personnelreport.pk %}" class="btn-link bg-teal-500 mb-3">Edit
+                    personnel report</a>
+                <a href="{% url 'personnel:delete' personnelreport.pk %}" class="btn-link">Delete personnel report</a>
             </div>
             {% endif %}
 

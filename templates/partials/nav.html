@@ -4,7 +4,8 @@
     <li class="nav_link"><a href="{% url "prediction:summary" %}">안전전망</a></li>
     <li class="nav_link"><a href="{% url "personnel:summary" %}">인원보고</a></li>
     <li class="nav_link"><a href="{% url "events:list" %}">주요일정</a></li>
-    <li class="nav_link"><a href="#" class="text-gray-700 font-medium">My Department</a></li>
+    <li class="nav_link"><a href="{% url "data:my-department" %}" class="text-gray-700 font-medium">My Department</a>
+    </li>
     <li class="nav_link"><a href="{% url "users:profile" user.pk %}">Profile</a></li>
 
     <li class="nav_link"><a href="{% url "users:logout" %}">Log out</a></li>

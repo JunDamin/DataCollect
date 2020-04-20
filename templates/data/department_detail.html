@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+{{department.name}}
+{% endblock page_title %}
+
+{% block content %}
+
+<div class="container mx-auto pb-10">
+
+    <div class="justify-between flex mb-3">
+
+        <div class='w-1/2 flex'>
+            <a href="{% url 'prediction:create' %}" class="btn bg-red-500 my-0 mx-3 text-white">안전전망 작성</a>
+            <a href="{% url 'prediction:list' %}" class="btn my-0 mx-3 text-red-500 font-bold">안전전망 전체목록</a>
+        </div>
+        <div class='w-1/2 flex'>
+            <a href="{% url 'personnel:create' %}" class="btn bg-teal-500 my-0 mx-3 text-white">인원보고 작성</a>
+            <a href="{% url 'personnel:list' %}" class="btn my-0 mx-3 text-teal-500 font-bold">인원보고 전체목록</a>
+        </div>
+
+    </div>
+
+    <div class="flex">
+
+        {% with department.get_prediction as prediction %}
+
+        <div class="w-1/2 flex flex-wrap justify-center mb-10">
+            {% for predict in prediction %}
+            {% include 'mixins/prediction/predict_card.html' with predict=predict %}
+            {% endfor %}
+        </div>
+
+        {% endwith %}
+
+        <div class='border'></div>
+        {% with department.get_personnel_report as personnel_report %}
+
+        <div class="w-1/2 flex flex-wrap justify-center mb-10">
+            {% for report in personnel_report %}
+            {% include 'mixins/personnel/report_card.html' with report=report %}
+            {% endfor %}
+        </div>
+
+
+        {% endwith %}
+
+    </div>
+
+</div>
+{% endblock content %}
