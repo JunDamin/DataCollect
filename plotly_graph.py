@@ -1,9 +1,11 @@
+import os
 from datetime import datetime
 import plotly.graph_objects as go
 import pandas as pd
 import plotly.colors as c
 from plotly.offline import plot
 import plotly.express as px
+from config.settings import BASE_DIR
 
 """
 df = pd.read_csv(
@@ -81,8 +83,8 @@ def plot_personnel(df):
             )
         ],
     )
-
-    with open("templates/mixins/personnel_graph.html", "w") as p:
+    path = os.path.join(BASE_DIR, "templates/mixins/personnel_graph.html")
+    with open(path, "w") as p:
         p.write(plot(fig, output_type="div"))
         print("generate")
 
@@ -122,8 +124,8 @@ def plot_prediction(df):
             )
         ],
     )
-
-    with open("templates/mixins/prediction_graph.html", "w") as p:
+    path = os.path.join(BASE_DIR, "templates/mixins/prediction_graph.html")
+    with open(path, "w") as p:
         p.write(plot(fig, output_type="div"))
         print("generate")
 

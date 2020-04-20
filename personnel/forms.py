@@ -46,6 +46,7 @@ class PersonnelCreateForm(forms.ModelForm):
             self.fields["country"].choices = ((i.id, i.korean) for i in country_choice)
         else:
             country_choice = (None, None)
+            self.fields["country"].choices = ((i.id, i.korean) for i in country_choice)
         self.fields["report_date"].initial = datetime.now()
 
     def save(self, *args, **kwargs):
